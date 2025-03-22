@@ -13,6 +13,9 @@ interface Props {
 }
 
 export const Hoverable = (props: Props) => {
+  // TODO: Replace by event handler style
+  // (State update has been stripped)
+
   const child = Children.only(props.children);
   const elementRef = useRef<HTMLDivElement>(null);
 

@@ -2,7 +2,9 @@
   "name": "@wsh-2025/client",
   "private": true,
   "scripts": {
-    "build": "webpack",
+    "build": "pnpm build:js && pnpm build:css",
+    "build:js": "webpack",
+    "build:css": "unocss ./src/**/*.{ts,tsx} --out-file=dist/styles.css",
     "format": "pnpm run format:eslint && pnpm run format:prettier",
     "format:eslint": "eslint --fix .",
     "format:prettier": "prettier --write ."
@@ -62,6 +64,7 @@
     "@types/react-dom": "19.0.2",
     "@types/webpack-bundle-analyzer": "4.7.0",
     "@types/wicg-task-scheduling": "2024.1.0",
+    "@unocss/cli": "66.1.0-beta.6",
     "@unocss/preset-icons": "66.1.0-beta.5",
     "@unocss/preset-wind3": "66.1.0-beta.5",
     "@unocss/reset": "66.1.0-beta.5",
