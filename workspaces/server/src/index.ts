@@ -7,7 +7,7 @@ import compression from '@fastify/compress';
 import { registerApi } from '@wsh-2025/server/src/api';
 import { initializeDatabase } from '@wsh-2025/server/src/drizzle/database';
 import { registerSsr } from '@wsh-2025/server/src/ssr';
-import { registerStreams } from '@wsh-2025/server/src/streams';
+import { registerStreams, registerThumbnailPath } from '@wsh-2025/server/src/streams';
 
 async function main() {
   await initializeDatabase();
@@ -28,6 +28,7 @@ async function main() {
   app.register(registerApi, { prefix: '/api' });
   app.register(registerStreams);
   app.register(registerSsr);
+  app.register(registerThumbnailPath);
 
   await app.ready();
   const address = await app.listen({ host: '0.0.0.0', port: Number(process.env['PORT']) });

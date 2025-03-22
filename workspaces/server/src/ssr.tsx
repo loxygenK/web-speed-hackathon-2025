@@ -12,6 +12,8 @@ import htmlescape from 'htmlescape';
 import { StrictMode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router';
+import { THUMBNAIL_DIR } from '@wsh-2025/server/src/streaming/playlist';
+import { ForInStatement } from 'typescript';
 
 function getFiles(parent: string): string[] {
   const dirents = readdirSync(parent, { withFileTypes: true });

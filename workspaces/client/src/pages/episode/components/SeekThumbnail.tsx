@@ -14,19 +14,18 @@ interface Props {
 
 export const SeekThumbnail = ({ episode }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const seekThumbnail = useSeekThumbnail({ episode });
+  const seekThumbnailDir = useSeekThumbnail({ episode });
   const pointer = usePointer();
   const duration = useDuration();
 
   const elementRect = ref.current?.parentElement?.getBoundingClientRect() ?? { left: 0, width: 0 };
   const relativeX = pointer.x - elementRect.left;
-
   const percentage = Math.max(0, Math.min(relativeX / elementRect.width, 1));
   const pointedTime = duration * percentage;
 
-  // サムネイルが画面からはみ出ないようにサムネイル中央を基準として left を計算する
-  const MIN_LEFT = SEEK_THUMBNAIL_WIDTH / 2;
-  const MAX_LEFT = elementRect.width - SEEK_THUMBNAIL_WIDTH / 2;
+  const seekThumbnail = seekThumbnailDir + `/${Math.round(pointedTime).toString().padStart(5, "0")}.png`;
+
+  console.log(pointedTime, seekThumbnail);
 
   return (
     <div
@@ -34,8 +33,6 @@ export const SeekThumbnail = ({ episode }: Props) => {
       className="absolute h-[90px] w-[160px] bg-[size:auto_100%] bottom-0 translate-x-[-50%]"
       style={{
         background: `url(${seekThumbnail})`,
-        backgroundPositionX: -1 * SEEK_THUMBNAIL_WIDTH * Math.floor(pointedTime),
-        left: Math.max(MIN_LEFT, Math.min(relativeX, MAX_LEFT)),
       }}
     />
   );

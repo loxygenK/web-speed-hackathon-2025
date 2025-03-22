@@ -7,66 +7,9 @@ interface Params {
 }
 
 async function getSeekThumbnail({ episode }: Params) {
-  const [{ FFmpeg }, { Parser }] = await Promise.all([
-    import(/* webpackChunkName: "ffmpeg" */ '@ffmpeg/ffmpeg'),
-    import(/* webpackChunkName: "m3u8-parser" */'m3u8-parser'),
-  ]);
-  // HLS のプレイリストを取得
-  const playlistUrl = `/streams/episode/${episode.id}/playlist.m3u8`;
-  const parser = new Parser();
-  parser.push(await fetch(playlistUrl).then((res) => res.text()));
-  parser.end();
-
-  // FFmpeg の初期化
-  const ffmpeg = new FFmpeg();
-  await ffmpeg.load({
-    coreURL: await import(/* webpackChunkName: "ffmpeg-core-js" */'@ffmpeg/core?arraybuffer').then(({ default: b }) => {
-      return URL.createObjectURL(new Blob([b], { type: 'text/javascript' }));
-    }),
-    wasmURL: await import(/* webpackChunkName: "ffmpeg-core-wasm" */'@ffmpeg/core/wasm?arraybuffer').then(({ default: b }) => {
-      return URL.createObjectURL(new Blob([b], { type: 'application/wasm' }));
-    }),
-  });
-
-  // 動画のセグメントファイルを取得
-  const segmentFiles = await Promise.all(
-    parser.manifest.segments.map((s) => {
-      return fetch(s.uri).then(async (res) => {
-        const binary = await res.arrayBuffer();
-        return { binary, id: Math.random().toString(36).slice(2) };
-      });
-    }),
-  );
-  // FFmpeg にセグメントファイルを追加
-  for (const file of segmentFiles) {
-    await ffmpeg.writeFile(file.id, new Uint8Array(file.binary));
-  }
-
-  // セグメントファイルをひとつの mp4 動画に結合
-  await ffmpeg.exec(
-    [
-      ['-i', `concat:${segmentFiles.map((f) => f.id).join('|')}`],
-      ['-c:v', 'copy'],
-      ['-map', '0:v:0'],
-      ['-f', 'mp4'],
-      'concat.mp4',
-    ].flat(),
-  );
-
-  // fps=30 とみなして、30 フレームごと（1 秒ごと）にサムネイルを生成
-  await ffmpeg.exec(
-    [
-      ['-i', 'concat.mp4'],
-      ['-vf', "fps=30,select='not(mod(n\\,30))',scale=160:90,tile=250x1"],
-      ['-frames:v', '1'],
-      'preview.jpg',
-    ].flat(),
-  );
-
-  const output = await ffmpeg.readFile('preview.jpg');
-  ffmpeg.terminate();
-
-  return URL.createObjectURL(new Blob([output], { type: 'image/jpeg' }));
+  return await fetch(`/streams/episode/${episode.id}/thumbnail`)
+    .then((mod) => mod.json())
+    .then((json) => json.path as string);
 }
 
 const weakMap = new WeakMap<object, Promise<string>>();

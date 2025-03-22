@@ -11,6 +11,8 @@ const SQLITE_PATH = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 
 let database: ReturnType<typeof drizzle<typeof schema>> | null = null;
 
+export type WSB2025DB = ReturnType<typeof getDatabase>;
+
 export function getDatabase() {
   if (database == null) {
     throw new Error('database is initializing.');
