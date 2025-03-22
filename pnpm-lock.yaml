@@ -69,9 +69,12 @@ importers:
       immer:
         specifier: 10.1.1
         version: 10.1.1
-      lodash:
-        specifier: 4.17.21
-        version: 4.17.21
+      lodash.debounce:
+        specifier: 4.0.8
+        version: 4.0.8
+      lodash.merge:
+        specifier: 4.6.2
+        version: 4.6.2
       luxon:
         specifier: 3.5.0
         version: 3.5.0
@@ -163,9 +166,12 @@ importers:
       '@iconify/types':
         specifier: 2.0.0
         version: 2.0.0
-      '@types/lodash':
-        specifier: 4.17.16
-        version: 4.17.16
+      '@types/lodash.debounce':
+        specifier: 4.0.9
+        version: 4.0.9
+      '@types/lodash.merge':
+        specifier: 4.6.9
+        version: 4.6.9
       '@types/luxon':
         specifier: 3.4.2
         version: 3.4.2
@@ -290,12 +296,6 @@ importers:
 
   workspaces/schema:
     dependencies:
-      '@sinclair/typebox':
-        specifier: 0.34.30
-        version: 0.34.30
-      '@sinclair/typemap':
-        specifier: 0.8.18
-        version: 0.8.18(@sinclair/typebox@0.34.30)(valibot@1.0.0-rc.3(typescript@5.7.2))(zod@3.24.1)
       drizzle-orm:
         specifier: 0.38.2
         version: 0.38.2(@libsql/client@0.14.0)(@types/react@19.0.1)(react@19.0.0)
@@ -305,9 +305,6 @@ importers:
       luxon:
         specifier: 3.5.0
         version: 3.5.0
-      valibot:
-        specifier: 1.0.0-rc.3
-        version: 1.0.0-rc.3(typescript@5.7.2)
       zod:
         specifier: 3.24.1
         version: 3.24.1
@@ -1923,16 +1920,6 @@ packages:
     resolution: {integrity: sha512-qn8tZzfb1nCIxxfLQfjvIYumuz6YoHJMoWFtCR3dey1lKkY/1obv3NvfAy1WRSztXAQqa/vZUDOXJ1M5LHfMvg==}
     hasBin: true
 
-  '@sinclair/typebox@0.34.30':
-    resolution: {integrity: sha512-gFB3BiqjDxEoadW0zn+xyMVb7cLxPCoblVn2C/BKpI41WPYi2d6fwHAlynPNZ5O/Q4WEiujdnJzVtvG/Jc2CBQ==}
-
-  '@sinclair/typemap@0.8.18':
-    resolution: {integrity: sha512-DHv4pnTjMrQFqfMXQDfH8UYcgJxh1pBRCROzhiyGs5lFssyxAXqi+k8V0oI+To+Ut+N1zjqpK90AsnJXtzsKqg==}
-    peerDependencies:
-      '@sinclair/typebox': ^0.34.24
-      valibot: ^1.0.0-rc.0
-      zod: ^3.24.1
-
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
@@ -2007,6 +1994,12 @@ packages:
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+
+  '@types/lodash.debounce@4.0.9':
+    resolution: {integrity: sha512-Ma5JcgTREwpLRwMM+XwBR7DaWe96nC38uCBDFKZWbNKD+osjVzdpnUSwBcqCptrp16sSOLBAUb50Car5I0TCsQ==}
+
+  '@types/lodash.merge@4.6.9':
+    resolution: {integrity: sha512-23sHDPmzd59kUgWyKGiOMO2Qb9YtqRO/x4IhkgNUiPQ1+5MUVqi6bCZeq9nBJ17msjIMbEIO5u+XW4Kz6aGUhQ==}
 
   '@types/lodash@4.17.16':
     resolution: {integrity: sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==}
@@ -3945,9 +3938,6 @@ packages:
 
   lodash.throttle@4.1.1:
     resolution: {integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==}
-
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -6981,14 +6971,6 @@ snapshots:
       js-yaml: 4.1.0
       minimist: 1.2.8
 
-  '@sinclair/typebox@0.34.30': {}
-
-  '@sinclair/typemap@0.8.18(@sinclair/typebox@0.34.30)(valibot@1.0.0-rc.3(typescript@5.7.2))(zod@3.24.1)':
-    dependencies:
-      '@sinclair/typebox': 0.34.30
-      valibot: 1.0.0-rc.3(typescript@5.7.2)
-      zod: 3.24.1
-
   '@standard-schema/spec@1.0.0': {}
 
   '@swc/helpers@0.5.15':
@@ -7077,6 +7059,14 @@ snapshots:
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
+
+  '@types/lodash.debounce@4.0.9':
+    dependencies:
+      '@types/lodash': 4.17.16
+
+  '@types/lodash.merge@4.6.9':
+    dependencies:
+      '@types/lodash': 4.17.16
 
   '@types/lodash@4.17.16': {}
 
@@ -9284,8 +9274,6 @@ snapshots:
   lodash.merge@4.6.2: {}
 
   lodash.throttle@4.1.1: {}
-
-  lodash@4.17.21: {}
 
   loose-envify@1.4.0:
     dependencies:
