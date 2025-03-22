@@ -71,6 +71,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       },
     } satisfies FastifyZodOpenApiSchema,
     handler: async function initialize(_req, reply) {
+      console.log("DB is being initialized");
       await initializeDatabase();
       reply.code(200).send({});
     },
