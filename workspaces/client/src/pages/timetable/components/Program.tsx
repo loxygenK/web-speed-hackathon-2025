@@ -37,16 +37,16 @@ export const Program = ({ height, program }: Props): ReactElement => {
 
   // This is not needed...?
   const [shouldImageBeVisible, setShouldImageBeVisible] = useState<boolean>(true);
-  useEffect(() => {
+  useResizeHandle(titleRef.current, useCallback(() => {
     if(imageRef.current === null || titleRef.current === null) {
       return;
     }
 
     const imageHeight = imageRef.current?.clientHeight ?? 0;
     const titleHeight = titleRef.current?.clientHeight ?? 0;
-    setShouldImageBeVisible(imageHeight <= height - titleHeight);
+    setShouldImageBeVisible(imageHeight <= (height - titleHeight - 24));
 
-  }, [imageRef.current, titleRef.current, height]);
+  }, [imageRef.current, titleRef.current, height]));
 
   const [imageSizeSuffix, setImageSizeSuffix] = useState("-400px.webp");
   useResizeHandle(imageRef.current, useCallback(() => {
@@ -99,19 +99,21 @@ export const Program = ({ height, program }: Props): ReactElement => {
                 {program.title}
               </div>
             </div>
-            {
-              shouldImageBeVisible && (
-                <div className="w-full">
-                  <div ref={imageRef}>
+            <div className="w-full">
+              <div ref={imageRef} className="w-full aspect-video">
+                {
+                  shouldImageBeVisible && (
                     <LazyLoadImage
                       alt=""
                       className="!block aspect-video pointer-events-none w-full rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]"
                       src={program.thumbnailUrl.replace("?", `${imageSizeSuffix}?`)}
+                      delayTime={100}
+                      loading="lazy"
                     />
-                  </div>
-                </div>
-              )
-            }
+                  )
+                }
+              </div>
+            </div>
           </div>
         </button>
       </Hoverable>
