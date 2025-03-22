@@ -8,7 +8,8 @@
     "format:eslint": "eslint --fix .",
     "format:prettier": "prettier --write .",
     "heroku-start": "tsx -r ./loaders/png.cjs ./src/index.ts",
-    "start": "PORT=${PORT:-8000} API_BASE_URL=${API_BASE_URL:-http://localhost:8000/api} tsx -r ./loaders/png.cjs ./src/index.ts"
+    "start": "PORT=${PORT:-8000} API_BASE_URL=${API_BASE_URL:-http://localhost:8000/api} tsx -r ./loaders/png.cjs ./src/index.ts",
+    "start:debug": "PORT=${PORT:-8000} API_BASE_URL=${API_BASE_URL:-http://localhost:8000/api} tsx --inspect-brk -r ./loaders/png.cjs ./src/index.ts"
   },
   "dependencies": {
     "@fastify/cookie": "11.0.2",

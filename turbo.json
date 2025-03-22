@@ -16,6 +16,11 @@
       "cache": false,
       "persistent": true
     },
+    "start:debug": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
     "heroku-build": {
       "dependsOn": ["build"]
     },
