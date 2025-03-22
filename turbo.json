@@ -1,0 +1,51 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["pnpm-lock.yaml"],
+  "globalEnv": [
+    "API_BASE_URL",
+    "PORT"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true,
+      "env": [
+      ]
+    },
+    "heroku-build": {
+      "dependsOn": ["build"]
+    },
+    "heroku-start": {
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+    },
+    "test:update": {
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+    },
+    "format": {
+      "outputs": []
+    },
+    "format:eslint": {
+      "outputs": []
+    },
+    "format:prettier": {
+      "outputs": []
+    },
+    "database:migrate": {
+      "cache": false
+    },
+    "database:reset": {
+      "cache": false
+    }
+  }
+}

@@ -2,19 +2,18 @@
   "private": true,
   "license": "MPL-2.0",
   "scripts": {
-    "build": "wireit",
-    "heroku-build": "wireit",
-    "heroku-cleanup": "wireit",
-    "heroku-start": "wireit",
-    "start": "wireit",
-    "test": "wireit",
-    "test:update": "wireit"
-  },
-  "dependencies": {
-    "wireit": "0.14.9"
+    "build": "turbo build",
+    "heroku-build": "turbo heroku-build",
+    "heroku-cleanup": "pnpm run _heroku-cleanup",
+    "heroku-start": "turbo heroku-start",
+    "start": "turbo start",
+    "test": "turbo test",
+    "test:update": "turbo test:update",
+    "_heroku-cleanup": "rm -rf ./node_modules ./workspaces/*/.turbo ./workspaces/test && pnpm install --prod"
   },
   "devDependencies": {
-    "@wsh-2025/configs": "workspace:*"
+    "@wsh-2025/configs": "workspace:*",
+    "turbo": "2.4.4"
   },
   "packageManager": "pnpm@10.6.5+sha256.47c8bca42b4b48534b5b1b28d573c506773937b02f68e52992fbd8269131c5c8",
   "engines": {
@@ -27,42 +26,6 @@
     },
     "patchedDependencies": {
       "shaka-player": "patches/shaka-player.patch"
-    }
-  },
-  "wireit": {
-    "start": {
-      "dependencies": [
-        "./workspaces/server:start"
-      ]
-    },
-    "build": {
-      "dependencies": [
-        "./workspaces/client:build"
-      ]
-    },
-    "heroku-build": {
-      "dependencies": [
-        "build"
-      ]
-    },
-    "heroku-cleanup": {
-      "//": "Heroku の buildpacks サイズ削減のため、サーバー起動に必要ないものを削除します",
-      "command": "rm -rf ./node_modules ./workspaces/*/.wireit ./workspaces/test && pnpm install --prod"
-    },
-    "heroku-start": {
-      "dependencies": [
-        "./workspaces/server:heroku-start"
-      ]
-    },
-    "test": {
-      "dependencies": [
-        "./workspaces/test:test"
-      ]
-    },
-    "test:update": {
-      "dependencies": [
-        "./workspaces/test:test:update"
-      ]
     }
   }
 }

@@ -2,9 +2,9 @@
   "name": "@wsh-2025/schema",
   "private": true,
   "scripts": {
-    "format": "wireit",
-    "format:eslint": "wireit",
-    "format:prettier": "wireit"
+    "format": "pnpm run format:eslint && pnpm run format:prettier",
+    "format:eslint": "eslint --fix .",
+    "format:prettier": "prettier --write ."
   },
   "dependencies": {
     "@sinclair/typebox": "0.34.30",
@@ -18,19 +18,6 @@
   },
   "devDependencies": {
     "@wsh-2025/configs": "workspace:*",
-    "@wsh-2025/schema": "workspace:*",
-    "webpack-bundle-analyzer": "4.10.2",
-    "wireit": "0.14.9"
-  },
-  "wireit": {
-    "format": {
-      "command": "pnpm run format:eslint && pnpm run format:prettier"
-    },
-    "format:eslint": {
-      "command": "eslint --fix ."
-    },
-    "format:prettier": {
-      "command": "prettier --write ."
-    }
+    "webpack-bundle-analyzer": "4.10.2"
   }
 }

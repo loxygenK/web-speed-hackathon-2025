@@ -54,6 +54,9 @@ const config = {
       },
     ],
   },
+  optimization: {
+    minimize: true,
+  },
   output: {
     chunkFilename: 'chunk-[contenthash].js',
     chunkFormat: false,

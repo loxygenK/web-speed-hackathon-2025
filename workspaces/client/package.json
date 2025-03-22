@@ -2,10 +2,10 @@
   "name": "@wsh-2025/client",
   "private": true,
   "scripts": {
-    "build": "wireit",
-    "format": "wireit",
-    "format:eslint": "wireit",
-    "format:prettier": "wireit"
+    "build": "webpack",
+    "format": "pnpm run format:eslint && pnpm run format:prettier",
+    "format:eslint": "eslint --fix .",
+    "format:prettier": "prettier --write ."
   },
   "dependencies": {
     "@babel/runtime": "7.26.10",
@@ -16,7 +16,6 @@
     "@headlessui/react": "2.2.0",
     "@radix-ui/react-slider": "1.2.3",
     "@standard-schema/spec": "1.0.0",
-    "@wsh-2025/client": "workspace:*",
     "@wsh-2025/schema": "workspace:*",
     "@yornaath/batshit": "0.10.1",
     "classnames": "2.5.1",
@@ -76,30 +75,6 @@
     "webpack": "5.96.1",
     "webpack-bundle-analyzer": "4.10.2",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.1.0",
-    "wireit": "0.14.9"
-  },
-  "wireit": {
-    "build": {
-      "command": "webpack",
-      "files": [
-        "../../pnpm-lock.yaml",
-        "../schema/src/**/*",
-        "./src/**/*",
-        "./webpack.config.mjs"
-      ],
-      "output": [
-        "./dist/**/*"
-      ]
-    },
-    "format": {
-      "command": "pnpm run format:eslint && pnpm run format:prettier"
-    },
-    "format:eslint": {
-      "command": "eslint --fix ."
-    },
-    "format:prettier": {
-      "command": "prettier --write ."
-    }
+    "webpack-dev-server": "5.1.0"
   }
 }
