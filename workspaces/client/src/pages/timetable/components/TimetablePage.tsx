@@ -8,6 +8,7 @@ import { ProgramList } from '@wsh-2025/client/src/pages/timetable/components/Pro
 import { TimelineYAxis } from '@wsh-2025/client/src/pages/timetable/components/TimelineYAxis';
 import { useShownNewFeatureDialog } from '@wsh-2025/client/src/pages/timetable/hooks/useShownNewFeatureDialog';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
+import { useCurrentUnixtimeMs } from '@wsh-2025/client/src/pages/timetable/hooks/useCurrentUnixtimeMs';
 
 const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features,
@@ -35,6 +36,8 @@ export const TimetablePage = () => {
 
   const channelIds = Object.keys(record);
   const programLists = Object.values(record);
+
+  const currentUnixtimeMs = useCurrentUnixtimeMs("min");
 
   return (
     <>
