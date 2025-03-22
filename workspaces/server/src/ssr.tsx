@@ -74,6 +74,7 @@ export function registerSsr(app: FastifyInstance): void {
           <meta charSet="UTF-8" />
           <meta content="width=device-width, initial-scale=1.0" name="viewport" />
           <script src="/public/main.js"></script>
+          <link href="/public/uno.css" type="text/css" rel="stylesheet">
         </head>
         <body></body>
       </html>

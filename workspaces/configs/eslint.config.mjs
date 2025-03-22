@@ -38,7 +38,7 @@ const configs = [
       ...tseslint.configs.strictTypeChecked.at(-1)?.rules,
       ...eslintConfigPrettier.rules,
       ...eslintPluginImport.configs.recommended.rules,
-      ...eslintPluginSort.configs.recommended.rules,
+      // ...eslintPluginSort.configs.recommended.rules,
       ...eslintPluginReact.configs.recommended.rules,
       ...eslintPluginReact.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-invalid-void-type': ['off'],
@@ -59,26 +59,26 @@ const configs = [
       eqeqeq: ['error', 'always', { null: 'never' }],
       'import/no-named-as-default': ['off'],
       'import/no-named-as-default-member': ['off'],
-      'import/order': [
-        'error',
-        {
-          alphabetize: {
-            order: 'asc',
-          },
-          'newlines-between': 'always',
-        },
-      ],
-      'react/jsx-sort-props': [
-        'error',
-        {
-          callbacksLast: true,
-          ignoreCase: false,
-          reservedFirst: ['key', 'ref'],
-          shorthandFirst: true,
-        },
-      ],
-      'sort/imports': ['off'],
-      'sort/type-properties': ['error'],
+      // 'import/order': [
+      //   'error',
+      //   {
+      //     alphabetize: {
+      //       order: 'asc',
+      //     },
+      //     'newlines-between': 'always',
+      //   },
+      // ],
+      // 'react/jsx-sort-props': [
+      //   'error',
+      //   {
+      //     callbacksLast: true,
+      //     ignoreCase: false,
+      //     reservedFirst: ['key', 'ref'],
+      //     shorthandFirst: true,
+      //   },
+      // ],
+      // 'sort/imports': ['off'],
+      // 'sort/type-properties': ['error'],
     },
     settings: {
       'import/parsers': {

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { Hoverable } from '@wsh-2025/client/src/features/layout/components/Hoverable';
 import { useMuted } from '@wsh-2025/client/src/pages/program/hooks/useMuted';
 
@@ -26,7 +27,10 @@ export const PlayerController = () => {
                 }}
               >
                 <span
-                  className={`i-material-symbols:${muted ? 'volume-off-rounded' : 'volume-up-rounded'} m-[14px] block size-[20px] shrink-0 grow-0 text-[#FFFFFF]`}
+                  className={classNames(
+                    `m-[14px] block size-[20px] shrink-0 grow-0 text-[#FFFFFF]`,
+                    muted ? "i-material-symbols:volume-off-rounded" : "i-material-symbols:volume-up-rounded",
+                  )}
                 />
               </button>
             </Hoverable>

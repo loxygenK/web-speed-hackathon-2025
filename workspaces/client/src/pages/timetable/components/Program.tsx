@@ -49,25 +49,40 @@ export const Program = ({ height, program }: Props): ReactElement => {
     <>
       <Hoverable classNames={{ hovered: isArchived ? 'brightness-200' : 'brightness-125' }}>
         <button
-          className={`h-[${height}px] w-auto border-[1px] border-solid border-[#000000] bg-[${isBroadcasting ? '#FCF6E5' : '#212121'}] px-[12px] py-[8px] text-left opacity-${isArchived ? 50 : 100}`}
-          style={{ width }}
+          className="w-auto border-[1px] border-solid border-[#000000] px-[12px] py-[8px] text-left"
+          style={{
+            width,
+            height,
+            backgroundColor: isBroadcasting ? '#FCF6E5' : '#212121',
+            opacity: `${isArchived ? 50 : 100}%`,
+          }}
           type="button"
           onClick={onClick}
         >
           <div className="flex size-full flex-col overflow-hidden">
             <div ref={titleRef} className="mb-[8px] flex flex-row items-start justify-start">
               <span
-                className={`mr-[8px] shrink-0 grow-0 text-[14px] font-bold text-[${isBroadcasting ? '#767676' : '#999999'}]`}
+                className="mr-[8px] shrink-0 grow-0 text-[14px] font-bold"
+                style={{
+                  color: isBroadcasting ? '#767676' : '#999999'
+                }}
               >
                 {DateTime.fromISO(program.startAt).toFormat('mm')}
               </span>
               <div
-                className={`grow-1 shrink-1 overflow-hidden text-[14px] font-bold text-[${isBroadcasting ? '#212121' : '#ffffff'}] line-clamp-3`}
+                className="grow-1 shrink-1 overflow-hidden text-[14px] font-bold line-clamp-3"
+                style={{
+                  color: isBroadcasting ? '#212121' : '#ffffff'
+                }}
               >
                 {program.title}
               </div>
             </div>
-            <div className={`opacity-${shouldImageBeVisible ? 100 : 0} w-full`}>
+            <div className="w-full"
+              style={{
+                opacity: `${shouldImageBeVisible ? 100 : 0}%`,
+              }}
+            >
               <img
                 ref={imageRef}
                 alt=""
