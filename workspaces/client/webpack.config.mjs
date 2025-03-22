@@ -10,7 +10,7 @@ const ANALYZE = process.env.ANALY !== undefined;
 const config = {
   devtool: 'source-map',
   entry: './src/main.tsx',
-  mode: 'production',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -55,7 +55,6 @@ const config = {
     ],
   },
   optimization: {
-    minimize: true,
     splitChunks: {
       chunks: 'async',
     },

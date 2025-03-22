@@ -62,15 +62,6 @@ const program = z.object({
 });
 assertSchema(program, createSelectSchema(databaseSchema.program));
 
-const recommendedModule = z.object({
-  id: z.string().openapi({ format: 'uuid' }),
-  order: z.number().openapi({ example: 1 }),
-  title: z.string().openapi({ example: '『チャンスの時間』を見ていたあなたにオススメ' }),
-  referenceId: z.string().openapi({ format: 'uuid' }),
-  type: z.enum(['carousel', 'jumbotron']).openapi({ example: 'carousel' }),
-});
-assertSchema(recommendedModule, createSelectSchema(databaseSchema.recommendedModule));
-
 const recommendedItem = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   order: z.number().openapi({ example: 1 }),
@@ -79,6 +70,51 @@ const recommendedItem = z.object({
   moduleId: z.string().openapi({ format: 'uuid' }),
 });
 assertSchema(recommendedItem, createSelectSchema(databaseSchema.recommendedItem));
+
+const tinySeries = series
+  .pick({ id: true, thumbnailUrl: true, title: true })
+
+const tinyCarouselEpisode = episode
+  .pick({ id: true, premium: true, thumbnailUrl: true, title: true })
+
+export const carouselModule = z.object({
+  type: z.literal("carousel"),
+  items: z.array(
+    recommendedItem.extend({
+      series: tinySeries
+        .extend({
+          episodes: z.array(tinyCarouselEpisode),
+        })
+        .nullable(),
+      episode: tinyCarouselEpisode
+        .extend({
+          series: tinySeries.extend({
+            episodes: z.array(tinyCarouselEpisode),
+          }),
+        })
+        .nullable(),
+    }),
+  ),
+});
+
+const tinyJumobtronEpisode = episode
+  .pick({ id: true, description: true, title: true })
+
+export const jumbotronModule = z.object({
+  type: z.literal("jumbotron"),
+  items: z.tuple([z.object({
+    episode: tinyJumobtronEpisode.strip(),
+  })]),
+});
+
+const recommendedModule = z.object({
+  id: z.string().openapi({ format: 'uuid' }),
+  order: z.number().openapi({ example: 1 }),
+  title: z.string().openapi({ example: '『チャンスの時間』を見ていたあなたにオススメ' }),
+  referenceId: z.string().openapi({ format: 'uuid' }),
+  type: z.enum(["carousel", "jumbotron"]),
+})
+assertSchema(recommendedModule, createSelectSchema(databaseSchema.recommendedModule));
 
 const user = z.object({
   id: z.number().openapi({ format: '0' }),
@@ -180,24 +216,12 @@ export const getRecommendedModulesRequestParams = z.object({
   limit: z.number().optional(),
 });
 export const getRecommendedModulesResponse = z.array(
-  recommendedModule.extend({
-    items: z.array(
-      recommendedItem.extend({
-        series: series
-          .extend({
-            episodes: z.array(episode.extend({})),
-          })
-          .nullable(),
-        episode: episode
-          .extend({
-            series: series.extend({
-              episodes: z.array(episode.extend({})),
-            }),
-          })
-          .nullable(),
-      }),
-    ),
-  }),
+  recommendedModule
+  .strip()
+  .omit({ type: true })
+  .and(
+    z.discriminatedUnion("type", [carouselModule.strip(), jumbotronModule.strip()])
+  ),
 );
 
 // POST /signIn
