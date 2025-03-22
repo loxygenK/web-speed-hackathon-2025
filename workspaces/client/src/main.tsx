@@ -16,6 +16,8 @@ declare global {
 }
 
 function main() {
+  console.log("Hydrating...");
+
   const store = createStore({});
   const router = createBrowserRouter(createRoutes(store), {});
 
@@ -28,5 +30,7 @@ function main() {
     </StrictMode>,
   );
 }
+
+console.log("Entrypoint is being evaluated");
 
 document.addEventListener('DOMContentLoaded', main);

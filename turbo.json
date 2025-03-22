@@ -8,14 +8,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**"],
+      "env": ["ANALY"]
     },
     "start": {
       "dependsOn": ["build"],
       "cache": false,
-      "persistent": true,
-      "env": [
-      ]
+      "persistent": true
     },
     "heroku-build": {
       "dependsOn": ["build"]

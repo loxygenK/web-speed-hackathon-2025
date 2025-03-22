@@ -1,7 +1,5 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { StandardSchemaV1 } from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
-import { Parser } from 'm3u8-parser';
 import { use } from 'react';
 
 interface Params {
@@ -9,6 +7,10 @@ interface Params {
 }
 
 async function getSeekThumbnail({ episode }: Params) {
+  const [{ FFmpeg }, { Parser }] = await Promise.all([
+    import(/* webpackChunkName: "ffmpeg" */ '@ffmpeg/ffmpeg'),
+    import(/* webpackChunkName: "m3u8-parser" */'m3u8-parser'),
+  ]);
   // HLS のプレイリストを取得
   const playlistUrl = `/streams/episode/${episode.id}/playlist.m3u8`;
   const parser = new Parser();
@@ -18,10 +20,10 @@ async function getSeekThumbnail({ episode }: Params) {
   // FFmpeg の初期化
   const ffmpeg = new FFmpeg();
   await ffmpeg.load({
-    coreURL: await import('@ffmpeg/core?arraybuffer').then(({ default: b }) => {
+    coreURL: await import(/* webpackChunkName: "ffmpeg-core-js" */'@ffmpeg/core?arraybuffer').then(({ default: b }) => {
       return URL.createObjectURL(new Blob([b], { type: 'text/javascript' }));
     }),
-    wasmURL: await import('@ffmpeg/core/wasm?arraybuffer').then(({ default: b }) => {
+    wasmURL: await import(/* webpackChunkName: "ffmpeg-core-wasm" */'@ffmpeg/core/wasm?arraybuffer').then(({ default: b }) => {
       return URL.createObjectURL(new Blob([b], { type: 'application/wasm' }));
     }),
   });
