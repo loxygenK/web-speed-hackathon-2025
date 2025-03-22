@@ -13,7 +13,7 @@ const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (features) => async ({ seriesId }: { seriesId: string }) => {
     const [series, modules] = await Promise.all([
       features.series.fetchSeriesById({ seriesId }),
-      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: seriesId }),
+      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: seriesId, limit: 1 }),
     ]);
 
     return { modules, series };
@@ -43,7 +43,7 @@ export const SeriesPage = () => {
             <img
               alt=""
               className="h-auto w-[400px] shrink-0 grow-0 rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]"
-              src={series.thumbnailUrl}
+              src={series.thumbnailUrl.replace("?", "-400px.webp?")}
             />
           </Flipped>
           <div className="grow-1 shrink-1 overflow-hidden">
