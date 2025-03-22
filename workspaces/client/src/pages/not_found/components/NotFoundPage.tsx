@@ -1,15 +1,20 @@
-import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
+import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 
-export const prefetch = async (store: ReturnType<typeof createStore>) => {
-  const modules = await store
-    .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ limit: 1, referenceId: 'error' });
-  return { modules };
-};
+const { prefetch, suspenseUntilFetch } = createFetchLogic(
+  (store) => store.features.recommended,
+  (recommended) => async () => {
+    const modules = await recommended.fetchRecommendedModulesByReferenceId({ limit: 1, referenceId: 'error' });
+    return { modules };
+  }
+);
+
+export { prefetch };
 
 export const NotFoundPage = () => {
+  suspenseUntilFetch();
+
   const modules = useRecommended({ referenceId: 'error' });
   const module = modules.at(0);
 

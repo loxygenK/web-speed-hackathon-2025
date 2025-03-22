@@ -27,7 +27,7 @@ export function createRoutes(store: ReturnType<typeof createStore>): RouteObject
               Component: EpisodePage,
               async loader({ params }) {
                 if(typeof window === "undefined") return;
-                return await prefetch(store, params);
+                return await prefetch(store, params as { episodeId: string });
               },
             };
           },
@@ -40,7 +40,7 @@ export function createRoutes(store: ReturnType<typeof createStore>): RouteObject
               Component: ProgramPage,
               async loader({ params }) {
                 if(typeof window === "undefined") return;
-                return await prefetch(store, params);
+                return await prefetch(store, params as { programId: string });
               },
             };
           },
@@ -53,7 +53,7 @@ export function createRoutes(store: ReturnType<typeof createStore>): RouteObject
               Component: SeriesPage,
               async loader({ params }) {
                 if(typeof window === "undefined") return;
-                return await prefetch(store, params);
+                return await prefetch(store, params as { seriesId: string });
               },
             };
           },

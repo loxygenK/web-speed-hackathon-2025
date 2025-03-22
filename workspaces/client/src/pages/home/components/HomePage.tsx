@@ -1,21 +1,24 @@
-import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
+import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 
-export const prefetch = async (store: ReturnType<typeof createStore>) => {
-  const modules = await store
-    .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: 'entrance' });
-  return { modules };
-};
+const { prefetch, useFetch } = createFetchLogic(
+  (store) => store.features.recommended,
+  (store) => () => {
+    console.log("fetching");
+    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance" });
+  }
+)
+
+export { prefetch };
 
 export const HomePage = () => {
   const modules = useRecommended({ referenceId: 'entrance' });
+  useFetch();
 
   return (
     <>
       <title>Home - AremaTV</title>
-
       <div className="w-full py-[48px]">
         {modules.map((module) => {
           return (

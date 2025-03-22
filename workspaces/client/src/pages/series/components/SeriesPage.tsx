@@ -1,25 +1,32 @@
 import { Flipped } from 'react-flip-toolkit';
-import { Params, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import invariant from 'tiny-invariant';
 
-import { createStore } from '@wsh-2025/client/src/app/createStore';
-import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
 import { SeriesEpisodeList } from '@wsh-2025/client/src/features/series/components/SeriesEpisodeList';
 import { useSeriesById } from '@wsh-2025/client/src/features/series/hooks/useSeriesById';
+import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
+import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 
-export const prefetch = async (store: ReturnType<typeof createStore>, { seriesId }: Params) => {
-  invariant(seriesId);
-  const series = await store.getState().features.series.fetchSeriesById({ seriesId });
-  const modules = await store
-    .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: seriesId });
-  return { modules, series };
-};
+const { prefetch, suspenseUntilFetch } = createFetchLogic(
+  (store) => store.features,
+  (features) => async ({ seriesId }: { seriesId: string }) => {
+    const [series, modules] = await Promise.all([
+      features.series.fetchSeriesById({ seriesId }),
+      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: seriesId }),
+    ]);
+
+    return { modules, series };
+  }
+);
+
+export { prefetch }
 
 export const SeriesPage = () => {
   const { seriesId } = useParams();
   invariant(seriesId);
+
+  suspenseUntilFetch({ seriesId });
 
   const series = useSeriesById({ seriesId });
   invariant(series);

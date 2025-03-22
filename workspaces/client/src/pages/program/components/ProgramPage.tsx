@@ -1,11 +1,10 @@
 import { DateTime } from 'luxon';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Flipped } from 'react-flip-toolkit';
-import { Link, Params, useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useUpdate } from 'react-use';
 import invariant from 'tiny-invariant';
 
-import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { Player } from '@wsh-2025/client/src/features/player/components/Player';
 import { PlayerType } from '@wsh-2025/client/src/features/player/constants/player_type';
 import { useProgramById } from '@wsh-2025/client/src/features/program/hooks/useProgramById';
@@ -15,26 +14,32 @@ import { SeriesEpisodeList } from '@wsh-2025/client/src/features/series/componen
 import { useTimetable } from '@wsh-2025/client/src/features/timetable/hooks/useTimetable';
 import { PlayerController } from '@wsh-2025/client/src/pages/program/components/PlayerController';
 import { usePlayerRef } from '@wsh-2025/client/src/pages/program/hooks/usePlayerRef';
+import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 
-export const prefetch = async (store: ReturnType<typeof createStore>, { programId }: Params) => {
-  invariant(programId);
+const { prefetch, suspenseUntilFetch } = createFetchLogic(
+  (store) => store.features,
+  (features) => async ({ programId }: { programId: string }) => {
+    const now = DateTime.now();
+    const since = now.startOf('day').toISO();
+    const until = now.endOf('day').toISO();
 
-  const now = DateTime.now();
-  const since = now.startOf('day').toISO();
-  const until = now.endOf('day').toISO();
+    const [program, channels, timetable, modules] = await Promise.all([
+      features.program.fetchProgramById({ programId }),
+      features.channel.fetchChannels(),
+      features.timetable.fetchTimetable({ since, until }),
+      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId })
+    ]);
+    return { channels, modules, program, timetable };
+  }
+)
 
-  const program = await store.getState().features.program.fetchProgramById({ programId });
-  const channels = await store.getState().features.channel.fetchChannels();
-  const timetable = await store.getState().features.timetable.fetchTimetable({ since, until });
-  const modules = await store
-    .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId });
-  return { channels, modules, program, timetable };
-};
+export { prefetch };
 
-export const ProgramPage = () => {
+export const ProgramPageImpl = () => {
   const { programId } = useParams();
   invariant(programId);
+
+  suspenseUntilFetch({ programId });
 
   const program = useProgramById({ programId });
   invariant(program);
@@ -169,3 +174,11 @@ export const ProgramPage = () => {
     </>
   );
 };
+
+export const ProgramPage = () => {
+  return (
+    <Suspense fallback={<></>}>
+      <ProgramPageImpl />
+    </Suspense>
+  );
+}

@@ -1,25 +1,35 @@
 import { DateTime } from 'luxon';
 import invariant from 'tiny-invariant';
 
-import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { useTimetable } from '@wsh-2025/client/src/features/timetable/hooks/useTimetable';
 import { ChannelTitle } from '@wsh-2025/client/src/pages/timetable/components/ChannelTitle';
 import { NewTimetableFeatureDialog } from '@wsh-2025/client/src/pages/timetable/components/NewTimetableFeatureDialog';
 import { ProgramList } from '@wsh-2025/client/src/pages/timetable/components/ProgramList';
 import { TimelineYAxis } from '@wsh-2025/client/src/pages/timetable/components/TimelineYAxis';
 import { useShownNewFeatureDialog } from '@wsh-2025/client/src/pages/timetable/hooks/useShownNewFeatureDialog';
+import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 
-export const prefetch = async (store: ReturnType<typeof createStore>) => {
-  const now = DateTime.now();
-  const since = now.startOf('day').toISO();
-  const until = now.endOf('day').toISO();
+const { prefetch, suspenseUntilFetch } = createFetchLogic(
+  (store) => store.features,
+  (features) => async () => {
+    const now = DateTime.now();
+    const since = now.startOf('day').toISO();
+    const until = now.endOf('day').toISO();
 
-  const channels = await store.getState().features.channel.fetchChannels();
-  const programs = await store.getState().features.timetable.fetchTimetable({ since, until });
-  return { channels, programs };
-};
+    const [channels, programs] = await Promise.all([
+      features.channel.fetchChannels(),
+      features.timetable.fetchTimetable({ since, until }),
+    ]);
+
+    return { channels, programs };
+  }
+);
+
+export { prefetch }
 
 export const TimetablePage = () => {
+  suspenseUntilFetch();
+
   const record = useTimetable();
   const shownNewFeatureDialog = useShownNewFeatureDialog();
 

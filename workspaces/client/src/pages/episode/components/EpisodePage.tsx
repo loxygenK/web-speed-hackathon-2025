@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
 import { Flipped } from 'react-flip-toolkit';
-import { Params, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import invariant from 'tiny-invariant';
 
-import { createStore } from '@wsh-2025/client/src/app/createStore';
 import { useAuthActions } from '@wsh-2025/client/src/features/auth/hooks/useAuthActions';
 import { useAuthUser } from '@wsh-2025/client/src/features/auth/hooks/useAuthUser';
 import { useEpisodeById } from '@wsh-2025/client/src/features/episode/hooks/useEpisodeById';
@@ -14,15 +13,21 @@ import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/
 import { SeriesEpisodeList } from '@wsh-2025/client/src/features/series/components/SeriesEpisodeList';
 import { PlayerController } from '@wsh-2025/client/src/pages/episode/components/PlayerController';
 import { usePlayerRef } from '@wsh-2025/client/src/pages/episode/hooks/usePlayerRef';
+import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 
-export const prefetch = async (store: ReturnType<typeof createStore>, { episodeId }: Params) => {
-  invariant(episodeId);
-  const episode = await store.getState().features.episode.fetchEpisodeById({ episodeId });
-  const modules = await store
-    .getState()
-    .features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: episodeId });
-  return { episode, modules };
-};
+const { prefetch, suspenseUntilFetch } = createFetchLogic(
+  (store) => store.features,
+  (features) => async ({ episodeId }: { episodeId: string }) => {
+    const [episode, modules] = await Promise.all([
+      features.episode.fetchEpisodeById({ episodeId }),
+      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: episodeId, limit: 1 })
+    ]);
+
+    return { episode, modules }
+  }
+)
+
+export { prefetch };
 
 export const EpisodePage = () => {
   const authActions = useAuthActions();
@@ -30,6 +35,8 @@ export const EpisodePage = () => {
 
   const { episodeId } = useParams();
   invariant(episodeId);
+
+  suspenseUntilFetch({ episodeId });
 
   const episode = useEpisodeById({ episodeId });
   invariant(episode);
