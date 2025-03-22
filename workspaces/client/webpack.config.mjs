@@ -2,11 +2,15 @@ import path from 'node:path';
 
 import webpack from 'webpack';
 
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+
+const ANALYZE = process.env.ANALY !== undefined;
+
 /** @type {import('webpack').Configuration} */
 const config = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: './src/main.tsx',
-  mode: 'none',
+  mode: 'development',
   module: {
     rules: [
       {
@@ -23,7 +27,6 @@ const config = {
                 '@babel/preset-env',
                 {
                   corejs: '3.41',
-                  forceAllTransforms: true,
                   targets: 'defaults',
                   useBuiltIns: 'entry',
                 },
@@ -61,6 +64,7 @@ const config = {
   plugins: [
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
     new webpack.EnvironmentPlugin({ API_BASE_URL: '/api', NODE_ENV: '' }),
+    ANALYZE && new BundleAnalyzerPlugin(),
   ],
   resolve: {
     alias: {
