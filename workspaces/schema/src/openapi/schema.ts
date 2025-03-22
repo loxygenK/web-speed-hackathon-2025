@@ -126,7 +126,7 @@ export const getChannelByIdResponse = channel.extend({});
 // GET /episodes
 export const getEpisodesRequestQuery = z.object({
   episodeIds: z.string().optional(),
-  excludeSeriesEpisode: z.coerce.boolean().optional().default(false),
+  excludeSeriesEpisode: z.coerce.boolean().optional(),
 });
 export const getEpisodesResponse = z.array(
   episode.extend({
