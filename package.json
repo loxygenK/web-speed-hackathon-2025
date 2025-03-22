@@ -4,12 +4,14 @@
   "scripts": {
     "build": "turbo build",
     "heroku-build": "turbo heroku-build",
+    "heroku-postbuild": "pnpm build && pnpm gen:thumbnail",
     "heroku-cleanup": "pnpm run _heroku-cleanup",
     "heroku-start": "turbo heroku-start",
     "start": "turbo start",
     "start:debug": "turbo start:debug",
     "test": "turbo test",
     "test:update": "turbo test:update",
+    "gen:thumbnail": "pnpm -F=\"server\" gen:thumbnail",
     "_heroku-cleanup": "rm -rf ./node_modules ./workspaces/*/.turbo ./workspaces/test && pnpm install --prod"
   },
   "dependencies": {

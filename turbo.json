@@ -49,6 +49,9 @@
     },
     "database:reset": {
       "cache": false
+    },
+    "gen:thumbnail": {
+      "outputs": []
     }
   }
 }

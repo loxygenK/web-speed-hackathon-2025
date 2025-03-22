@@ -29,6 +29,8 @@ export async function generateThumbnail(streamId: string) {
 
   const segmentFilePaths = await Array.fromAsync(glob(path.join(STREAM_DIR, streamId) + "/*.ts"));
 
+  console.log(`  ${segmentFilePaths.length} file(s) are iterated`);
+
   const tmpdir = os.tmpdir();
   const allTs = path.join(tmpdir, "all.ts");
 
