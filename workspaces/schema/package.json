@@ -19,6 +19,7 @@
   "devDependencies": {
     "@wsh-2025/configs": "workspace:*",
     "@wsh-2025/schema": "workspace:*",
+    "webpack-bundle-analyzer": "4.10.2",
     "wireit": "0.14.9"
   },
   "wireit": {
