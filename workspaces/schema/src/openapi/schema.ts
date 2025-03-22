@@ -1,21 +1,15 @@
 /* eslint-disable sort/object-properties */
 import 'zod-openapi/extend';
 
-import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import * as databaseSchema from '@wsh-2025/schema/src/database/schema';
-
-function assertSchema<T>(_actual: z.ZodType<NoInfer<T>>, _expected: z.ZodType<T>): void {}
-
-const channel = z.object({
+export const channel = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   logoUrl: z.string().openapi({ example: 'https://image.example.com/assets/d13d2e22-a7ff-44ba-94a3-5f025f2b63cd.png' }),
   name: z.string().openapi({ example: 'AREMA NEWS' }),
 });
-assertSchema(channel, createSelectSchema(databaseSchema.channel));
 
-const episode = z.object({
+export const episode = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   title: z.string().openapi({ example: '第1話 吾輩は猫である' }),
   description: z.string().openapi({
@@ -30,9 +24,8 @@ const episode = z.object({
   }),
   premium: z.boolean().openapi({ example: false }),
 });
-assertSchema(episode, createSelectSchema(databaseSchema.episode));
 
-const series = z.object({
+export const series = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   title: z.string().openapi({ example: '吾輩は猫である' }),
   description: z.string().openapi({
@@ -43,9 +36,8 @@ const series = z.object({
     example: 'https://image.example.com/assets/d13d2e22-a7ff-44ba-94a3-5f025f2b63cd.png',
   }),
 });
-assertSchema(series, createSelectSchema(databaseSchema.series));
 
-const program = z.object({
+export const program = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   title: z.string().openapi({ example: '吾輩は猫である' }),
   description: z.string().openapi({
@@ -60,21 +52,19 @@ const program = z.object({
   channelId: z.string().openapi({ format: 'uuid' }),
   episodeId: z.string().openapi({ format: 'uuid' }),
 });
-assertSchema(program, createSelectSchema(databaseSchema.program));
 
-const recommendedItem = z.object({
+export const recommendedItem = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   order: z.number().openapi({ example: 1 }),
   seriesId: z.string().nullable().openapi({ format: 'uuid' }),
   episodeId: z.string().nullable().openapi({ format: 'uuid' }),
   moduleId: z.string().openapi({ format: 'uuid' }),
 });
-assertSchema(recommendedItem, createSelectSchema(databaseSchema.recommendedItem));
 
-const tinySeries = series
+export const tinySeries = series
   .pick({ id: true, thumbnailUrl: true, title: true })
 
-const tinyCarouselEpisode = episode
+export const tinyCarouselEpisode = episode
   .pick({ id: true, premium: true, thumbnailUrl: true, title: true })
 
 export const carouselModule = z.object({
@@ -97,7 +87,7 @@ export const carouselModule = z.object({
   ),
 });
 
-const tinyJumobtronEpisode = episode
+export const tinyJumobtronEpisode = episode
   .pick({ id: true, description: true, title: true })
 
 export const jumbotronModule = z.object({
@@ -107,21 +97,19 @@ export const jumbotronModule = z.object({
   })]),
 });
 
-const recommendedModule = z.object({
+export const recommendedModule = z.object({
   id: z.string().openapi({ format: 'uuid' }),
   order: z.number().openapi({ example: 1 }),
   title: z.string().openapi({ example: '『チャンスの時間』を見ていたあなたにオススメ' }),
   referenceId: z.string().openapi({ format: 'uuid' }),
   type: z.enum(["carousel", "jumbotron"]),
 })
-assertSchema(recommendedModule, createSelectSchema(databaseSchema.recommendedModule));
 
-const user = z.object({
+export const user = z.object({
   id: z.number().openapi({ format: '0' }),
   email: z.string().openapi({ example: 'user123' }),
   password: z.string().openapi({ example: 'password123' }),
 });
-assertSchema(user, createSelectSchema(databaseSchema.user));
 
 // GET /channels
 export const getChannelsRequestQuery = z.object({
