@@ -16,13 +16,14 @@ patchedDependencies:
 importers:
 
   .:
+    dependencies:
+      turbo:
+        specifier: 2.4.4
+        version: 2.4.4
     devDependencies:
       '@wsh-2025/configs':
         specifier: workspace:*
         version: link:workspaces/configs
-      turbo:
-        specifier: 2.4.4
-        version: 2.4.4
 
   workspaces/client:
     dependencies:

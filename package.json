@@ -11,9 +11,11 @@
     "test:update": "turbo test:update",
     "_heroku-cleanup": "rm -rf ./node_modules ./workspaces/*/.turbo ./workspaces/test && pnpm install --prod"
   },
-  "devDependencies": {
-    "@wsh-2025/configs": "workspace:*",
+  "dependencies": {
     "turbo": "2.4.4"
+  },
+  "devDependencies": {
+    "@wsh-2025/configs": "workspace:*"
   },
   "packageManager": "pnpm@10.6.5+sha256.47c8bca42b4b48534b5b1b28d573c506773937b02f68e52992fbd8269131c5c8",
   "engines": {
