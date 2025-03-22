@@ -6,11 +6,13 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 
 const ANALYZE = process.env.ANALY !== undefined;
 
+const PROD = true
+
 /** @type {import('webpack').Configuration} */
 const config = {
-  devtool: 'source-map',
+  devtool: PROD ? 'source-map' : false,
   entry: './src/main.tsx',
-  mode: 'development',
+  mode: PROD ? 'production' : 'development',
   module: {
     rules: [
       {
@@ -56,6 +58,7 @@ const config = {
     splitChunks: {
       chunks: 'async',
     },
+    minimize: PROD,
   },
   output: {
     chunkFilename: "[name]-[contenthash].js",
