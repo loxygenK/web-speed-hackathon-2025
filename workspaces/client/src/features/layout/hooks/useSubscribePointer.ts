@@ -16,7 +16,6 @@ export function useSubscribePointer(): void {
     window.addEventListener('pointermove', handlePointerMove, { signal: abortController.signal });
 
     let immediate = setTimeout(function tick() {
-      console.log("useSubscribePointer");
       s.features.layout.updatePointer({ ...current });
       immediate = setTimeout(tick);
     }, 0);

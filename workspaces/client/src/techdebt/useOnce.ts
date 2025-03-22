@@ -9,8 +9,6 @@ export function useOnce(callback: () => void) {
       return;
     }
 
-    console.log("useOnce");
-
     ran.current = true;
     callback();
   }, [])

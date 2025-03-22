@@ -7,7 +7,6 @@ type Purpose = "min" | "sec"
 export function useCurrentUnixtimeMs(purpose: Purpose): number {
   const state = useStore((s) => s);
   useEffect(() => {
-    console.log("Effect revalidate");
     let interval: ReturnType<typeof setTimeout> | undefined;
 
     const updateCurrentTime = () => {
@@ -18,7 +17,6 @@ export function useCurrentUnixtimeMs(purpose: Purpose): number {
       let nextMs: number;
       switch(purpose) {
         case "min":
-          console.log(date.getSeconds())
           nextMs = (60 - date.getSeconds()) * 1000;
           break;
         case "sec":
@@ -26,8 +24,6 @@ export function useCurrentUnixtimeMs(purpose: Purpose): number {
           break;
       }
       nextMs += 100;
-
-      console.log("Update!", nextMs);
 
       clearTimeout(interval);
       interval = setTimeout(updateCurrentTime, nextMs);

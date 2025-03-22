@@ -25,8 +25,6 @@ export const SeekThumbnail = ({ episode }: Props) => {
 
   const seekThumbnail = seekThumbnailDir + `/${Math.round(pointedTime).toString().padStart(5, "0")}.png`;
 
-  console.log(pointedTime, seekThumbnail);
-
   return (
     <div
       ref={ref}

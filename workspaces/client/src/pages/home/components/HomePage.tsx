@@ -5,7 +5,6 @@ import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 const { prefetch, useFetch } = createFetchLogic(
   (store) => store.features.recommended,
   (store) => () => {
-    console.log("fetching");
     return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance" });
   }
 )

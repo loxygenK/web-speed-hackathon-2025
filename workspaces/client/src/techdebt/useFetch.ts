@@ -16,7 +16,6 @@ export function createFetchLogic<T, U, R extends Params[]>(
   const useFetch = (...params: R) => {
     const store = useStore((s) => select(s));
     useOnce(() => {
-      console.log("useFetch");
       void fetcher(store)(...params);
     })
   };
