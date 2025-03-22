@@ -11,7 +11,7 @@ export function useEpisode(episodeId: string) {
 
   useEffect(() => {
     episodeService
-      .fetchEpisodeById({ episodeId })
+      .fetchEpisodeById({ episodeId, excludeSeriesEpisodes: true })
       .then(setEpisode)
       .catch(() => {
         setEpisode(null);

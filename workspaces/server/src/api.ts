@@ -179,7 +179,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
         with: {
           series: {
             with: {
-              episodes: {
+              episodes: req.query.excludeSeriesEpisode ? undefined : {
                 orderBy(episode, { asc }) {
                   return asc(episode.order);
                 },

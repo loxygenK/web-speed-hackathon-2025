@@ -126,11 +126,12 @@ export const getChannelByIdResponse = channel.extend({});
 // GET /episodes
 export const getEpisodesRequestQuery = z.object({
   episodeIds: z.string().optional(),
+  excludeSeriesEpisode: z.coerce.boolean().optional().default(false),
 });
 export const getEpisodesResponse = z.array(
   episode.extend({
     series: series.extend({
-      episodes: z.array(episode.extend({})),
+      episodes: z.array(episode.extend({})).optional().default([]),
     }),
   }),
 );
