@@ -2,6 +2,7 @@ import '@wsh-2025/server/src/setups/luxon';
 
 import cors from '@fastify/cors';
 import fastify from 'fastify';
+import compression from '@fastify/compress';
 
 import { registerApi } from '@wsh-2025/server/src/api';
 import { initializeDatabase } from '@wsh-2025/server/src/drizzle/database';
@@ -15,6 +16,11 @@ async function main() {
 
   app.addHook('onSend', async (_req, reply) => {
     reply.header('cache-control', 'no-store');
+  });
+  await app.register(compression, {
+    global: true,
+    encodings: ["gzip"],
+    threshold: 0,
   });
   app.register(cors, {
     origin: true,

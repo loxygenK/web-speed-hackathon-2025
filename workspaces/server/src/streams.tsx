@@ -129,5 +129,6 @@ export function registerStreams(app: FastifyInstance): void {
     }
 
     reply.type('application/vnd.apple.mpegurl').send(playlist.join('\n'));
+    return reply;
   });
 }

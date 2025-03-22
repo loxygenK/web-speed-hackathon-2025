@@ -12,6 +12,7 @@
     "start:debug": "PORT=${PORT:-8000} API_BASE_URL=${API_BASE_URL:-http://localhost:8000/api} tsx --inspect-brk -r ./loaders/png.cjs ./src/index.ts"
   },
   "dependencies": {
+    "@fastify/compress": "8.0.1",
     "@fastify/cookie": "11.0.2",
     "@fastify/cors": "10.0.1",
     "@fastify/session": "11.1.0",
