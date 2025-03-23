@@ -11,6 +11,7 @@ import { useAuthActions } from '@wsh-2025/client/src/features/auth/hooks/useAuth
 import { useAuthDialogType } from '@wsh-2025/client/src/features/auth/hooks/useAuthDialogType';
 import { useAuthUser } from '@wsh-2025/client/src/features/auth/hooks/useAuthUser';
 import { Loading } from '@wsh-2025/client/src/features/layout/components/Loading';
+import { useSubscribeLoading } from '@wsh-2025/client/src/features/layout/hooks/useSubscribeLoading';
 
 interface Props {
   children: ReactNode;
@@ -18,10 +19,6 @@ interface Props {
 
 export const Layout = ({ children }: Props) => {
   const navigation = useNavigation();
-  const isLoading =
-    navigation.location != null && (navigation.state !== 'idle') && navigation.location.state?.["loaderAnimation"] !== "none";
-
-  console.log(isLoading, navigation.state, navigation);
 
   const location = useLocation();
   const isTimetablePage = location.pathname === '/timetable';
@@ -29,6 +26,12 @@ export const Layout = ({ children }: Props) => {
   const authActions = useAuthActions();
   const authDialogType = useAuthDialogType();
   const user = useAuthUser();
+  const loading = useSubscribeLoading();
+
+  const isLoading =
+    (navigation.location != null && (navigation.state !== 'idle') && navigation.location.state?.["loaderAnimation"] !== "none") || loading;
+
+  console.log(isLoading, navigation.state, navigation);
 
   const [shouldHeaderBeTransparent, setShouldHeaderBeTransparent] = useState(false);
 

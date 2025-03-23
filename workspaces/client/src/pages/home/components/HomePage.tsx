@@ -1,3 +1,5 @@
+import { Loading } from '@wsh-2025/client/src/features/layout/components/Loading';
+import { useLoading } from '@wsh-2025/client/src/features/layout/hooks/useLoading';
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 import { useStreamingRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useStreamingRecommendation';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
@@ -16,6 +18,8 @@ export { prefetch };
 
 export const HomePage = () => {
   const { fetchNext, modules } = useStreamingRecommended({ referenceId: 'entrance' });
+
+  useLoading(modules.length === 0);
 
   useEffect(() => {
     if(modules.length === 0) {
