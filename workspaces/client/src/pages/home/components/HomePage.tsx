@@ -9,7 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features.recommended,
   (store) => () => {
-    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 3 });
+    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 6 });
   },
   { prefetch: true }
 )
@@ -37,7 +37,7 @@ export const HomePage = () => {
       if(entry.isIntersecting) {
         fetchNext();
       }
-    }, { rootMargin: "800px" });
+    }, { rootMargin: "1600px" });
 
     observer.observe(contentEnd.current);
 

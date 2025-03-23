@@ -6,7 +6,7 @@ interface Params {
 }
 
 export function useStreamingRecommended({ referenceId }: Params) {
-  const cursor = useRef(3);
+  const cursor = useRef(6);
   const recommended = useStore((s) => s.features.recommended);
 
   const fetchNext = () => {
