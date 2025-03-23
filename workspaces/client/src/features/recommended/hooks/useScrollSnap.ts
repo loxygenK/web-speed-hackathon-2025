@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 
 export function useScrollSnap({ scrollPadding }: { scrollPadding: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isScrolling = useRef(false);
   const isSnapping = useRef(false);
 
   useEffect(() => {
@@ -10,23 +9,12 @@ export function useScrollSnap({ scrollPadding }: { scrollPadding: number }) {
       return;
     }
 
-    const handleScroll = () => {
-      if (isScrolling.current) {
-        return;
-      }
-      isScrolling.current = true;
-    };
-
     const handleScrollend = () => {
-      if (!isScrolling.current) {
+      if (containerRef.current == null) {
         return;
       }
-      isScrolling.current = false;
-    };
 
-    let timer: ReturnType<typeof setTimeout> | null = null;
-    let interval = setInterval(() => {
-      if (!containerRef.current) {
+      if (isSnapping.current) {
         return;
       }
 
@@ -39,37 +27,23 @@ export function useScrollSnap({ scrollPadding }: { scrollPadding: number }) {
           : prev;
       }, 0);
 
-      if (isScrolling.current) {
-        return;
-      }
-
-      if (isSnapping.current) {
-        return;
-      }
-
       isSnapping.current = true;
       containerRef.current.scrollTo({
         behavior: 'smooth',
         left: (childScrollPositions[childIndex] ?? 0) - scrollPadding,
       });
 
-      timer = setTimeout(() => {
+      setTimeout(() => {
         isSnapping.current = false;
       }, 1000);
-    });
+    };
 
-    containerRef.current.addEventListener('scroll', handleScroll);
     containerRef.current.addEventListener('scrollend', handleScrollend);
 
     return () => {
-      containerRef.current?.removeEventListener('scroll', handleScroll);
       containerRef.current?.removeEventListener('scrollend', handleScrollend);
-      clearInterval(interval);
-      if (timer) {
-        clearTimeout(timer);
-      }
     };
-  }, []);
+  }, [scrollPadding]);
 
   return containerRef;
 }
