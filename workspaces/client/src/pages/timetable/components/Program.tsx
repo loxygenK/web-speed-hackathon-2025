@@ -1,15 +1,15 @@
 import { StandardSchemaV1 } from '@standard-schema/spec';
 import * as schema from '@wsh-2025/schema/src/api/schema';
 import { DateTime } from 'luxon';
-import { ReactElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ReactElement, useCallback, useRef, useState } from 'react';
 import { ArrayValues } from 'type-fest';
 
-import { Hoverable } from '@wsh-2025/client/src/features/layout/components/Hoverable';
 import { ProgramDetailDialog } from '@wsh-2025/client/src/pages/timetable/components/ProgramDetailDialog';
 import { useColumnWidth } from '@wsh-2025/client/src/pages/timetable/hooks/useColumnWidth';
 import { useSelectedProgramId } from '@wsh-2025/client/src/pages/timetable/hooks/useSelectedProgramId';
 import { useStore } from '@wsh-2025/client/src/app/StoreContext';
 import { useResizeHandle } from '@wsh-2025/client/src/techdebt/useResizeHandle';
+import classNames from 'classnames';
 
 interface Props {
   height: number;
@@ -67,9 +67,11 @@ export const Program = ({ height, program }: Props): ReactElement => {
 
   return (
     <>
-      <Hoverable classNames={{ hovered: isArchived ? 'brightness-200' : 'brightness-125' }}>
         <button
-          className="w-auto border-[1px] border-solid border-[#000000] px-[12px] py-[8px] text-left"
+          className={classNames(
+            "w-auto border-[1px] border-solid border-[#000000] px-[12px] py-[8px] text-left",
+            isArchived ? "hover:brightness-200" : "hover:brightness-125"
+          )}
           style={{
             width,
             height,
@@ -114,7 +116,6 @@ export const Program = ({ height, program }: Props): ReactElement => {
             </div>
           </div>
         </button>
-      </Hoverable>
       <ProgramDetailDialog isOpen={shouldProgramDetailDialogOpen} program={program} />
     </>
   );
