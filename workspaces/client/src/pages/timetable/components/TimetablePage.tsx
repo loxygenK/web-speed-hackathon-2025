@@ -8,7 +8,7 @@ import { ProgramList } from '@wsh-2025/client/src/pages/timetable/components/Pro
 import { TimelineYAxis } from '@wsh-2025/client/src/pages/timetable/components/TimelineYAxis';
 import { useShownNewFeatureDialog } from '@wsh-2025/client/src/pages/timetable/hooks/useShownNewFeatureDialog';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
-import { useCurrentUnixtimeMs } from '@wsh-2025/client/src/pages/timetable/hooks/useCurrentUnixtimeMs';
+import { useCurrentUnixtimeMs } from '@wsh-2025/client/src/techdebt/useCurrentUnixtimeMs';
 
 const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features,

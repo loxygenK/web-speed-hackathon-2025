@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useCallback, useEffect, useRef } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useUpdate } from 'react-use';
@@ -15,6 +15,7 @@ import { useTimetable } from '@wsh-2025/client/src/features/timetable/hooks/useT
 import { PlayerController } from '@wsh-2025/client/src/pages/program/components/PlayerController';
 import { usePlayerRef } from '@wsh-2025/client/src/pages/program/hooks/usePlayerRef';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
+import { useCurrentUnixtimeMs } from '@wsh-2025/client/src/techdebt/useCurrentUnixtimeMs';
 
 const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features,
@@ -57,44 +58,35 @@ export const ProgramPageImpl = () => {
   const navigate = useNavigate();
   const isArchivedRef = useRef(DateTime.fromISO(program.endAt) <= DateTime.now());
   const isBroadcastStarted = DateTime.fromISO(program.startAt) <= DateTime.now();
-  useEffect(() => {
+
+  useCurrentUnixtimeMs("min", useCallback(() => {
+    console.log("Update!");
+
     if (isArchivedRef.current) {
+      console.log("This is archived.");
       return;
     }
 
-    // 放送前であれば、放送開始になるまで画面を更新し続ける
-    if (!isBroadcastStarted) {
-      let timeout = setTimeout(function tick() {
-        forceUpdate();
-        timeout = setTimeout(tick, 250);
-      }, 250);
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (DateTime.now() < DateTime.fromISO(program.endAt)) {
+      console.log("The program is still on the live.");
+      return;
     }
 
     // 放送中に次の番組が始まったら、画面をそのままにしつつ、情報を次の番組にする
-    let timeout = setTimeout(function tick() {
-      if (DateTime.now() < DateTime.fromISO(program.endAt)) {
-        timeout = setTimeout(tick, 250);
-        return;
-      }
 
-      if (nextProgram?.id) {
-        void navigate(`/programs/${nextProgram.id}`, {
-          preventScrollReset: true,
-          replace: true,
-          state: { loading: 'none' },
-        });
-      } else {
-        isArchivedRef.current = true;
-        forceUpdate();
-      }
-    }, 250);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [isBroadcastStarted, nextProgram?.id]);
+    const nextId = nextProgram?.id;
+    console.log("Up next:", nextId);
+    if (nextId == null) {
+      isArchivedRef.current = true;
+      forceUpdate();
+    }
+
+    void navigate(`/programs/${nextId}`, {
+      preventScrollReset: true,
+      replace: true,
+      state: { loaderAnimation: 'none' },
+    });
+  }, [isBroadcastStarted, nextProgram?.id]));
 
   return (
     <>
