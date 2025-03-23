@@ -200,9 +200,12 @@ export const getProgramByIdResponse = program.extend({
 });
 
 // GET /recommended/:referenceId
+export const getRecommendedModulesRequestQuery = z.object({
+  limit: z.coerce.number().optional(),
+  offset: z.coerce.number().optional(),
+});
 export const getRecommendedModulesRequestParams = z.object({
   referenceId: z.string(),
-  limit: z.number().optional(),
 });
 export const getRecommendedModulesResponse = z.array(
   recommendedModule

@@ -18,6 +18,7 @@ export {
   getProgramsResponse,
   getProgramByIdRequestParams,
   getProgramByIdResponse,
+  getRecommendedModulesRequestQuery,
   getRecommendedModulesRequestParams,
   getRecommendedModulesResponse,
   signInRequestBody,

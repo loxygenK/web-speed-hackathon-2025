@@ -23,6 +23,7 @@ import { z } from 'zod';
 import type { ZodOpenApiVersion } from 'zod-openapi';
 
 import { getDatabase, initializeDatabase } from '@wsh-2025/server/src/drizzle/database';
+import { and } from 'drizzle-orm';
 
 export async function registerApi(app: FastifyInstance): Promise<void> {
   app.setValidatorCompiler(validatorCompiler);
@@ -466,6 +467,7 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
     url: '/recommended/:referenceId',
     schema: {
       tags: ['レコメンド'],
+      querystring: schema.getRecommendedModulesRequestQuery,
       params: schema.getRecommendedModulesRequestParams,
       response: {
         200: {
@@ -480,7 +482,6 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
     handler: async function getRecommendedModules(req, reply) {
       const database = getDatabase();
 
-      const limit = z.object({ limit: z.coerce.number() }).safeParse(req.query).data?.limit;
       const modules = await database.query.recommendedModule.findMany({
         orderBy(module, { asc }) {
           return asc(module.order);
@@ -488,7 +489,8 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
         where(module, { eq }) {
           return eq(module.referenceId, req.params.referenceId);
         },
-        limit,
+        limit: req.query.limit,
+        offset: req.query.offset,
         with: {
           items: {
             orderBy(item, { asc }) {
@@ -496,8 +498,10 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
             },
             with: {
               series: {
+                columns: { id: true, thumbnailUrl: true, title: true },
                 with: {
                   episodes: {
+                    columns: { id: true, premium: true, thumbnailUrl: true, title: true },
                     orderBy(episode, { asc }) {
                       return asc(episode.order);
                     },
@@ -505,10 +509,13 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
                 },
               },
               episode: {
+                columns: { id: true, premium: true, thumbnailUrl: true, title: true, description: true, },
                 with: {
                   series: {
+                    columns: { id: true, thumbnailUrl: true, title: true },
                     with: {
                       episodes: {
+                        columns: { id: true, premium: true, thumbnailUrl: true, title: true },
                         orderBy(episode, { asc }) {
                           return asc(episode.order);
                         },

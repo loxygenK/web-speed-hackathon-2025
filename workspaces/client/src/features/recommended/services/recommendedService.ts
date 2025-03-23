@@ -7,6 +7,7 @@ const $fetch = createFetch({
 
   schema: createSchema({
     '/recommended/:referenceId': {
+      query: schema.getRecommendedModulesRequestQuery,
       output: schema.getRecommendedModulesResponse,
     },
   }),
@@ -16,15 +17,16 @@ const $fetch = createFetch({
 interface RecommendedService {
   fetchRecommendedModulesByReferenceId: (params: {
     limit?: number | undefined;
+    offset?: number | undefined;
     referenceId: string;
   }) => Promise<StandardSchemaV1.InferOutput<typeof schema.getRecommendedModulesResponse>>;
 }
 
 export const recommendedService: RecommendedService = {
-  async fetchRecommendedModulesByReferenceId({ limit, referenceId }) {
+  async fetchRecommendedModulesByReferenceId({ limit, offset, referenceId }) {
     const data = await $fetch('/recommended/:referenceId', {
       params: { referenceId },
-      query: { limit }
+      query: { limit, offset }
     });
     return data;
   },
