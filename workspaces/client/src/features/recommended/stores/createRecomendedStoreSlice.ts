@@ -32,9 +32,7 @@ export const createRecommendedStoreSlice = () => {
       set((state) => {
         return produce(state, (draft) => {
           console.log("Before Composing:", JSON.parse(JSON.stringify(draft)));
-          draft.references[referenceId] = offset === undefined
-            ? modules.map((module) => module.id)
-            : [...(draft.references[referenceId] ?? []), ...modules.map((module) => module.id)]
+          draft.references[referenceId] = [...new Set([...(draft.references[referenceId] ?? []), ...modules.map((module) => module.id)])];
           for (const module of modules) {
             draft.recommendedModules[module.id] = module;
           }

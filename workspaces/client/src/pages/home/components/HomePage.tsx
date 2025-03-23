@@ -2,6 +2,7 @@ import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/co
 import { useStreamingRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useStreamingRecommendation';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 import { useOnUserInteract } from '@wsh-2025/client/src/techdebt/useOnUserInteract';
+import { useEffect } from 'react';
 
 const { prefetch } = createFetchLogic(
   (store) => store.features.recommended,
@@ -15,6 +16,12 @@ export { prefetch };
 
 export const HomePage = () => {
   const { fetchNext, modules } = useStreamingRecommended({ referenceId: 'entrance' });
+
+  useEffect(() => {
+    if(modules.length === 0) {
+      fetchNext();
+    };
+  }, []);
 
   useOnUserInteract(() => {
     setTimeout(async () => {

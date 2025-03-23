@@ -6,18 +6,18 @@ interface Params {
 }
 
 export function useStreamingRecommended({ referenceId }: Params) {
-  const cursor = useRef(5);
   const recommended = useStore((s) => s.features.recommended);
+  const cursor = useRef(recommended.references[referenceId]?.length ?? 0);
 
   const fetchNext = async () => {
-    console.log("Fetching more, cursor at" + cursor.current);
+    const fetching = cursor.current;
+    cursor.current += 8;
+    console.log("Fetching more, cursor at" + fetching);
     await recommended.fetchRecommendedModulesByReferenceId({
       referenceId: "entrance",
       limit: 8,
-      offset: cursor.current,
+      offset: fetching,
     });
-    cursor.current += 8;
-
   };
 
   const moduleIds = recommended.references[referenceId];

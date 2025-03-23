@@ -87,7 +87,7 @@ export function registerSsr(app: FastifyInstance): void {
           })};
         </script>
         <script>
-          window.__zustandHydrationData = ${htmlescape(JSON.parse(JSON.stringify(store.getState())))};
+          window.__zustandHydrationData = ${htmlescape(store.getState())};
         </script>
       </html>
     `);
