@@ -30,6 +30,7 @@ export const EpisodeItem = ({ episode }: Props) => {
                     className="aspect-video !block"
                     src={episode.thumbnailUrl.replace("?", "-400px.webp?")}
                     width="100%"
+                    loading="lazy"
                   />
                   <span className="i-material-symbols:play-arrow-rounded absolute bottom-[4px] left-[4px] m-[4px] block size-[20px] text-[#ffffff]" />
                   {episode.premium ? (

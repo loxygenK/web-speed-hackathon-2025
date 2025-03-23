@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features.recommended,
   (store) => () => {
-    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 8 });
+    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 10 });
   },
   { prefetch: true }
 )

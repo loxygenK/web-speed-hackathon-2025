@@ -6,16 +6,16 @@ interface Params {
 }
 
 export function useStreamingRecommended({ referenceId }: Params) {
-  const cursor = useRef(8);
+  const cursor = useRef(10);
   const recommended = useStore((s) => s.features.recommended);
 
   const fetchNext = () => {
     recommended.fetchRecommendedModulesByReferenceId({
       referenceId: "entrance",
-      limit: 5,
+      limit: 10,
       offset: cursor.current,
     });
-    cursor.current += 6;
+    cursor.current += 10;
 
     console.log("Fetching more, cursor at" + cursor.current);
   };
