@@ -20,7 +20,7 @@ async function main() {
   await app.register(compression, {
     global: true,
     encodings: ["gzip"],
-    threshold: 0,
+    threshold: 1024,
   });
   app.register(cors, {
     origin: true,
