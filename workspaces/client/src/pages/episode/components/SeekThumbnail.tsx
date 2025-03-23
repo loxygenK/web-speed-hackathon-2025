@@ -6,8 +6,6 @@ import { usePointer } from '@wsh-2025/client/src/features/layout/hooks/usePointe
 import { useDuration } from '@wsh-2025/client/src/pages/episode/hooks/useDuration';
 import { useSeekThumbnail } from '@wsh-2025/client/src/pages/episode/hooks/useSeekThumbnail';
 
-const SEEK_THUMBNAIL_WIDTH = 160;
-
 interface Props {
   episode: StandardSchemaV1.InferOutput<typeof schema.getEpisodeByIdResponse>;
 }

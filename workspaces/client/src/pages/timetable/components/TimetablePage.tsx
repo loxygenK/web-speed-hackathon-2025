@@ -37,7 +37,8 @@ export const TimetablePage = () => {
   const channelIds = Object.keys(record);
   const programLists = Object.values(record);
 
-  const currentUnixtimeMs = useCurrentUnixtimeMs("min");
+  // children depends to this state
+  useCurrentUnixtimeMs("min");
 
   return (
     <>

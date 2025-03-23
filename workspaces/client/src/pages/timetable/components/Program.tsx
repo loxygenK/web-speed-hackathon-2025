@@ -37,12 +37,12 @@ export const Program = ({ height, program }: Props): ReactElement => {
   // This is not needed...?
   const [shouldImageBeVisible, setShouldImageBeVisible] = useState<boolean>(true);
   useResizeHandle(titleRef.current, useCallback(() => {
-    if(imageRef.current === null || titleRef.current === null) {
+    if(imageRef.current == null || titleRef.current == null) {
       return;
     }
 
-    const imageHeight = imageRef.current?.clientHeight ?? 0;
-    const titleHeight = titleRef.current?.clientHeight ?? 0;
+    const imageHeight = imageRef.current.clientHeight;
+    const titleHeight = titleRef.current.clientHeight;
     setShouldImageBeVisible(imageHeight <= (height - titleHeight - 24));
 
   }, [imageRef.current, titleRef.current, height]));

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Suspense, useCallback, useEffect, useRef } from 'react';
+import { Suspense, useCallback, useRef } from 'react';
 import { Flipped } from 'react-flip-toolkit';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useUpdate } from 'react-use';

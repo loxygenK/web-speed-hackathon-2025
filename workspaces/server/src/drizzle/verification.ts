@@ -1,4 +1,3 @@
-/* eslint-disable sort/object-properties */
 import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 

@@ -17,6 +17,6 @@ export function useOnUserInteract(callback: () => void) {
     window.addEventListener("mousemove", onInteract);
     window.addEventListener("keydown", onInteract);
 
-    return () => unregister();
+    return () => { unregister() };
   }, [])
 }

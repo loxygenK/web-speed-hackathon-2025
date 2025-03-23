@@ -23,7 +23,6 @@ import { z } from 'zod';
 import type { ZodOpenApiVersion } from 'zod-openapi';
 
 import { getDatabase, initializeDatabase } from '@wsh-2025/server/src/drizzle/database';
-import { and } from 'drizzle-orm';
 
 export async function registerApi(app: FastifyInstance): Promise<void> {
   app.setValidatorCompiler(validatorCompiler);
@@ -55,7 +54,6 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
 
   const api = app.withTypeProvider<FastifyZodOpenApiTypeProvider>();
 
-  /* eslint-disable sort/object-properties */
   api.route({
     method: 'POST',
     url: '/initialize',
@@ -669,6 +667,4 @@ export async function registerApi(app: FastifyInstance): Promise<void> {
       return reply;
     },
   });
-
-  /* eslint-enable sort/object-properties */
 }

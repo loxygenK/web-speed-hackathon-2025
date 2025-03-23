@@ -1,4 +1,3 @@
-import { Loading } from '@wsh-2025/client/src/features/layout/components/Loading';
 import { useLoading } from '@wsh-2025/client/src/features/layout/hooks/useLoading';
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 import { useStreamingRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useStreamingRecommendation';
@@ -23,7 +22,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     if(modules.length === 0) {
-      fetchNext();
+      void fetchNext();
     };
   }, []);
 

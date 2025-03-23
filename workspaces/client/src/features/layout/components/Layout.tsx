@@ -17,6 +17,18 @@ interface Props {
   children: ReactNode;
 }
 
+function isLoaderAnimationOptout(state: unknown) {
+  if(typeof state !== "object" || state == null) {
+    return false;
+  }
+
+  if(!("loaderAnimation" in state)) {
+    return false;
+  }
+
+  return state["loaderAnimation"] === "none"
+}
+
 export const Layout = ({ children }: Props) => {
   const navigation = useNavigation();
 
@@ -29,7 +41,8 @@ export const Layout = ({ children }: Props) => {
   const loading = useSubscribeLoading();
 
   const isLoading =
-    (navigation.location != null && (navigation.state !== 'idle') && navigation.location.state?.["loaderAnimation"] !== "none") || loading;
+  // @ts-expect-error: †正しいのは私†
+    (navigation.location != null && (navigation.state !== 'idle') && !isLoaderAnimationOptout(navigation.location.state)) || loading;
 
   const [shouldHeaderBeTransparent, setShouldHeaderBeTransparent] = useState(false);
 

@@ -1,7 +1,6 @@
 import { STREAM_DIR, THUMBNAIL_DIR } from "@wsh-2025/server/src/streaming/playlist";
-import { glob } from "fs/promises";
-
 import fs from "fs/promises";
+
 import os from "os";
 import path from "path";
 import { spawnSync } from "child_process";
@@ -19,7 +18,7 @@ function ffmpeg(args: string[]) {
     throw child.error;
   }
 
-  if(child.status === null || child.status > 0) {
+  if(child.status == null || child.status > 0) {
     throw new Error(`FFmpeg failed with exit-code ${child.status}`);
   }
 }
@@ -27,7 +26,7 @@ function ffmpeg(args: string[]) {
 export async function generateThumbnail(streamId: string) {
   console.log("= Iterating segment files...")
 
-  const segmentFilePaths = await Array.fromAsync(glob(path.join(STREAM_DIR, streamId) + "/*.ts"));
+  const segmentFilePaths = await Array.fromAsync(fs.glob(path.join(STREAM_DIR, streamId) + "/*.ts"));
 
   console.log(`  ${segmentFilePaths.length} file(s) are iterated`);
 
