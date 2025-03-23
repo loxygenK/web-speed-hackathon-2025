@@ -15,8 +15,15 @@ declare global {
 }
 
 function main() {
-  const store = createStore({});
-  const router = createBrowserRouter(createRoutes(store), {});
+  const store = createStore({
+    hydrationData: "__zustandHydrationData" in global ? __zustandHydrationData : undefined,
+  });
+  const router = createBrowserRouter(
+    createRoutes(store),
+    "__staticRouterHydrationData" in global
+      ? { hydrationData: __staticRouterHydrationData }
+      : {},
+  );
 
   hydrateRoot(
     document,

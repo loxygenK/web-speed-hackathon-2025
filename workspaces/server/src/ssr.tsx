@@ -80,18 +80,18 @@ export function registerSsr(app: FastifyInstance): void {
           <link href="/public/uno.css" type="text/css" rel="stylesheet">
         </head>
         <body></body>
+        <script>
+          window.__staticRouterHydrationData = ${htmlescape({
+            actionData: context.actionData,
+            loaderData: context.loaderData,
+          })};
+        </script>
+        <script>
+          window.__zustandHydrationData = ${htmlescape(JSON.parse(JSON.stringify(store.getState())))};
+        </script>
       </html>
     `);
 
     return reply;
   });
-
-  /*
-      <script>
-        window.__staticRouterHydrationData = ${htmlescape({
-          actionData: context.actionData,
-          loaderData: context.loaderData,
-        })};
-      </script>
-    * */
 }

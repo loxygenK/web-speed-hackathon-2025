@@ -14,7 +14,6 @@ export function createRoutes(store: ReturnType<typeof createStore>): RouteObject
             return {
               Component: HomePage,
               async loader() {
-                if(typeof window === "undefined") return;
                 return await prefetch(store);
               },
             };

@@ -10,14 +10,13 @@ const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features.recommended,
   (store) => () => {
     return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 3 });
-  }
+  },
+  { prefetch: true }
 )
 
 export { prefetch };
 
 export const HomePage = () => {
-  suspenseUntilFetch();
-
   const contentEnd = useRef<HTMLDivElement>(null);
 
   const { fetchNext, modules } = useStreamingRecommended({ referenceId: 'entrance' });
