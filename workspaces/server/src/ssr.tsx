@@ -25,6 +25,13 @@ function getFilePaths(relativePath: string, rootDir: string): string[] {
   return files.map((file) => path.join('/', path.relative(rootDir, file)));
 }
 
+const rootDir = path.resolve(__dirname, '../../../');
+const imagePaths = [
+  getFilePaths('public/images', rootDir),
+  getFilePaths('public/animations', rootDir),
+  getFilePaths('public/logos', rootDir),
+].flat().filter((path) => path.includes("400px") || path.includes(".svg"))
+
 export function registerSsr(app: FastifyInstance): void {
   app.register(fastifyStatic, {
     prefix: '/public/',
@@ -52,7 +59,7 @@ export function registerSsr(app: FastifyInstance): void {
     }
 
     const router = createStaticRouter(handler.dataRoutes, context);
-    const ssrHtml = renderToString(
+    renderToString(
       <StrictMode>
         <StoreProvider createStore={() => store}>
           <StaticRouterProvider context={context} hydrate={false} router={router} />
@@ -60,20 +67,13 @@ export function registerSsr(app: FastifyInstance): void {
       </StrictMode>,
     );
 
-    const rootDir = path.resolve(__dirname, '../../../');
-    const imagePaths = [
-      getFilePaths('public/images', rootDir),
-      getFilePaths('public/animations', rootDir),
-      getFilePaths('public/logos', rootDir),
-    ].flat().filter((path) => path.includes("400px") || path.includes(".svg"))
-
     reply.type('text/html').send(/* html */ `
       <!DOCTYPE html>
       <html lang="ja">
         <head>
           <meta charSet="UTF-8" />
           <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-          <script src="/public/main.js"></script>
+          <script src="/public/main.js" fetchpriority=high></script>
           <link href="/public/uno.css" type="text/css" rel="stylesheet">
           ${imagePaths.map((imagePath) => `<link as="image" href="${imagePath}" rel="preload" />`).join('\n')}
         </head>
