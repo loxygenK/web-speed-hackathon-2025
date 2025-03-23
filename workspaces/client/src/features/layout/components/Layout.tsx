@@ -22,9 +22,9 @@ export const Layout = ({ children }: Props) => {
 
   const navigation = useNavigation();
   const isLoading =
-    navigation.location != null && (navigation.location.state as { loading?: string } | null)?.['loading'] !== 'none';
+    navigation.location != null && (navigation.state !== 'idle');
 
-  console.log(isLoading, navigation.location);
+  console.log(isLoading, navigation.state, navigation);
 
   const location = useLocation();
   const isTimetablePage = location.pathname === '/timetable';
