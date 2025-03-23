@@ -1,12 +1,12 @@
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
 import { useStreamingRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useStreamingRecommendation';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
-import { useEffect, useRef } from 'react';
+import { useOnUserInteract } from '@wsh-2025/client/src/techdebt/useOnUserInteract';
 
-const { prefetch, suspenseUntilFetch } = createFetchLogic(
+const { prefetch } = createFetchLogic(
   (store) => store.features.recommended,
   (store) => () => {
-    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 10 });
+    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 5 });
   },
   { prefetch: true }
 )
@@ -14,34 +14,14 @@ const { prefetch, suspenseUntilFetch } = createFetchLogic(
 export { prefetch };
 
 export const HomePage = () => {
-  const contentEnd = useRef<HTMLDivElement>(null);
-
   const { fetchNext, modules } = useStreamingRecommended({ referenceId: 'entrance' });
 
-  useEffect(() => {
-    if(contentEnd.current === null) {
-      return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-      if(entry === undefined) {
-        throw new Error("Expected intersection observer to be available");
-      }
-
-      console.log("Intersection Observer", entry);
-
-      if(entry.isIntersecting) {
-        fetchNext();
-      }
-    }, { rootMargin: "1800px" });
-
-    observer.observe(contentEnd.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  useOnUserInteract(() => {
+    setTimeout(async () => {
+      await fetchNext();
+      await fetchNext();
+    }, 50);
+  });
 
   return (
     <>
@@ -54,7 +34,6 @@ export const HomePage = () => {
             </div>
           );
         })}
-        <div ref={contentEnd} />
       </div>
     </>
   );

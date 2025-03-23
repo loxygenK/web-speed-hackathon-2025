@@ -26,7 +26,6 @@ export const SeriesItem = ({ series }: Props) => {
                     className="aspect-video !block"
                     src={series.thumbnailUrl.replace("?", "-400px.webp?")}
                     width="100%"
-                    loading="lazy"
                   />
                 </Flipped>
               </div>
