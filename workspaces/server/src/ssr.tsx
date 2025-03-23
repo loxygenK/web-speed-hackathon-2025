@@ -67,9 +67,8 @@ export function registerSsr(app: FastifyInstance): void {
       getFilePaths('public/images', rootDir),
       getFilePaths('public/animations', rootDir),
       getFilePaths('public/logos', rootDir),
-    ].flat();
+    ].flat().filter((path) => path.includes("400px") || path.includes(".svg"))
 
-    // ${imagePaths.map((imagePath) => `<link as="image" href="${imagePath}" rel="preload" />`).join('\n')}
     reply.type('text/html').send(/* html */ `
       <!DOCTYPE html>
       <html lang="ja">
@@ -78,6 +77,7 @@ export function registerSsr(app: FastifyInstance): void {
           <meta content="width=device-width, initial-scale=1.0" name="viewport" />
           <script src="/public/main.js"></script>
           <link href="/public/uno.css" type="text/css" rel="stylesheet">
+          ${imagePaths.map((imagePath) => `<link as="image" href="${imagePath}" rel="preload" />`).join('\n')}
         </head>
         <body></body>
         <script>

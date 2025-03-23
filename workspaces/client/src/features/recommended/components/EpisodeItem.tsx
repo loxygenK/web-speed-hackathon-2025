@@ -2,7 +2,6 @@ import { Flipped } from 'react-flip-toolkit';
 import { NavLink } from 'react-router';
 
 import { Hoverable } from '@wsh-2025/client/src/features/layout/components/Hoverable';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 interface Props {
   episode: {
@@ -25,10 +24,10 @@ export const EpisodeItem = ({ episode }: Props) => {
             <>
               <Flipped stagger flipId={isTransitioning ? `episode-${episode.id}` : 0}>
                 <div className="relative overflow-hidden rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F] before:absolute before:inset-x-0 before:bottom-0 before:block before:h-[64px] before:bg-gradient-to-t before:from-[#212121] before:to-transparent before:content-['']">
-                  <LazyLoadImage
+                  <img
                     alt=""
                     className="aspect-video !block"
-                    src={episode.thumbnailUrl.replace("?", "-400px.webp?")}
+                    src={episode.thumbnailUrl.replace(/\?.+/, "") + "-400px.webp"}
                     width="100%"
                   />
                   <span className="i-material-symbols:play-arrow-rounded absolute bottom-[4px] left-[4px] m-[4px] block size-[20px] text-[#ffffff]" />

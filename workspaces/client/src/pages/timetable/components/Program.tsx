@@ -8,7 +8,6 @@ import { Hoverable } from '@wsh-2025/client/src/features/layout/components/Hover
 import { ProgramDetailDialog } from '@wsh-2025/client/src/pages/timetable/components/ProgramDetailDialog';
 import { useColumnWidth } from '@wsh-2025/client/src/pages/timetable/hooks/useColumnWidth';
 import { useSelectedProgramId } from '@wsh-2025/client/src/pages/timetable/hooks/useSelectedProgramId';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useStore } from '@wsh-2025/client/src/app/StoreContext';
 import { useResizeHandle } from '@wsh-2025/client/src/techdebt/useResizeHandle';
 
@@ -103,11 +102,10 @@ export const Program = ({ height, program }: Props): ReactElement => {
               <div ref={imageRef} className="w-full aspect-video">
                 {
                   shouldImageBeVisible && (
-                    <LazyLoadImage
+                    <img
                       alt=""
                       className="!block aspect-video pointer-events-none w-full rounded-[8px] border-[2px] border-solid border-[#FFFFFF1F]"
                       src={program.thumbnailUrl.replace("?", `${imageSizeSuffix}?`)}
-                      delayTime={100}
                       loading="lazy"
                     />
                   )
