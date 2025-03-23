@@ -22,7 +22,7 @@ export const Layout = ({ children }: Props) => {
 
   const navigation = useNavigation();
   const isLoading =
-    navigation.location != null && (navigation.state !== 'idle');
+    navigation.location != null && (navigation.state !== 'idle') && navigation.location.state?.["loaderAnimation"] !== "none";
 
   console.log(isLoading, navigation.state, navigation);
 
