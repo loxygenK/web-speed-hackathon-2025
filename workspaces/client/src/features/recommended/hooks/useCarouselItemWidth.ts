@@ -10,7 +10,7 @@ export function useCarouselItemWidth() {
 
   const onResize = useCallback(() => {
     if (containerRef.current == null) {
-      throw new Error("containerRef is not mounted yet");
+      return;
     }
 
     const styles = window.getComputedStyle(containerRef.current);
