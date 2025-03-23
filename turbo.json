@@ -3,7 +3,8 @@
   "globalDependencies": ["pnpm-lock.yaml"],
   "globalEnv": [
     "API_BASE_URL",
-    "PORT"
+    "PORT",
+    "NODE_ENV"
   ],
   "tasks": {
     "build": {

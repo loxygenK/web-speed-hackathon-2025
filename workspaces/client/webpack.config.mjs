@@ -10,7 +10,7 @@ const PROD = true
 
 /** @type {import('webpack').Configuration} */
 const config = {
-  devtool: PROD ? 'source-map' : false,
+  devtool: PROD ? false : 'source-map',
   entry: './src/main.tsx',
   mode: PROD ? 'production' : 'development',
   module: {
@@ -67,7 +67,7 @@ const config = {
   },
   plugins: [
     new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 9999 }),
-    new webpack.EnvironmentPlugin({ API_BASE_URL: '/api', NODE_ENV: '' }),
+    new webpack.EnvironmentPlugin({ API_BASE_URL: '/api' }),
     ANALYZE && new BundleAnalyzerPlugin(),
   ],
   resolve: {

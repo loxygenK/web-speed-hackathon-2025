@@ -4,7 +4,7 @@
   "scripts": {
     "build": "turbo build",
     "heroku-build": "turbo heroku-build",
-    "heroku-postbuild": "pnpm build && pnpm gen:thumbnail",
+    "heroku-postbuild": "NODE_ENV=production pnpm build && pnpm gen:thumbnail",
     "heroku-cleanup": "pnpm run _heroku-cleanup",
     "heroku-start": "turbo heroku-start",
     "start": "turbo start",
