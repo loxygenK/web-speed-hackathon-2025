@@ -5,9 +5,6 @@ interface Params {
 }
 
 export function useProgramById({ programId }: Params) {
-  const state = useStore((s) => s);
-
-  const program = state.features.program.programs[programId];
-
-  return program;
+  const programs = useStore((s) => s.features.program.programs);
+  return programs[programId];
 }

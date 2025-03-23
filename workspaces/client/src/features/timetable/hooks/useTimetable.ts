@@ -6,10 +6,11 @@ import { useStore } from '@wsh-2025/client/src/app/StoreContext';
 type ChannelId = string;
 
 export function useTimetable() {
-  const state = useStore((s) => s);
+  const channelsState = useStore((s) => s.features.channel.channels);
+  const programsState = useStore((s) => s.features.timetable.programs);
 
-  const channels = Object.values(state.features.channel.channels);
-  const programs = Object.values(state.features.timetable.programs);
+  const channels = Object.values(channelsState);
+  const programs = Object.values(programsState);
 
   const record: Record<ChannelId, ArrayValues<typeof programs>[]> = {};
 

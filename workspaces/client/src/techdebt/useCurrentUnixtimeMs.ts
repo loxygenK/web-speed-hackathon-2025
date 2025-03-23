@@ -5,12 +5,13 @@ import { useStore } from '@wsh-2025/client/src/app/StoreContext';
 type Purpose = "min" | "sec"
 
 export function useCurrentUnixtimeMs(purpose: Purpose, callback?: () => void): number {
-  const state = useStore((s) => s);
+  const refreshCurrentUnixtimeMs = useStore((s) => s.pages.timetable.refreshCurrentUnixtimeMs);
+  const currentUnixtimeMs = useStore((s) => s.pages.timetable.currentUnixtimeMs);
   useEffect(() => {
     let interval: ReturnType<typeof setTimeout> | undefined;
 
     const updateCurrentTime = (initial?: true) => {
-      state.pages.timetable.refreshCurrentUnixtimeMs();
+      refreshCurrentUnixtimeMs();
 
       if(!initial) {
         callback?.();
@@ -40,5 +41,5 @@ export function useCurrentUnixtimeMs(purpose: Purpose, callback?: () => void): n
     };
   }, [callback]);
 
-  return state.pages.timetable.currentUnixtimeMs;
+  return currentUnixtimeMs;
 }

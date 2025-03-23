@@ -5,9 +5,6 @@ interface Params {
 }
 
 export function useSeriesById({ seriesId }: Params) {
-  const state = useStore((s) => s);
-
-  const series = state.features.series.series[seriesId];
-
-  return series;
+  const series = useStore((s) => s.features.series.series);
+  return series[seriesId];
 }
