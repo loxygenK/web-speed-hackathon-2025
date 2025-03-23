@@ -1,15 +1,12 @@
 import { RecommendedSection } from '@wsh-2025/client/src/features/recommended/components/RecommendedSection';
-import { useRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useRecommended';
 import { useStreamingRecommended } from '@wsh-2025/client/src/features/recommended/hooks/useStreamingRecommendation';
 import { createFetchLogic } from '@wsh-2025/client/src/techdebt/useFetch';
 import { useEffect, useRef } from 'react';
 
-import InfiniteScroll from "react-infinite-scroll-component";
-
 const { prefetch, suspenseUntilFetch } = createFetchLogic(
   (store) => store.features.recommended,
   (store) => () => {
-    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 6 });
+    return store.fetchRecommendedModulesByReferenceId({ referenceId: "entrance", limit: 8 });
   },
   { prefetch: true }
 )
@@ -37,7 +34,7 @@ export const HomePage = () => {
       if(entry.isIntersecting) {
         fetchNext();
       }
-    }, { rootMargin: "1600px" });
+    }, { rootMargin: "1800px" });
 
     observer.observe(contentEnd.current);
 
