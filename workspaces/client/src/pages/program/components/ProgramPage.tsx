@@ -28,7 +28,7 @@ const { prefetch, suspenseUntilFetch } = createFetchLogic(
       features.program.fetchProgramById({ programId }),
       features.channel.fetchChannels(),
       features.timetable.fetchTimetable({ since, until }),
-      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId })
+      features.recommended.fetchRecommendedModulesByReferenceId({ referenceId: programId, limit: 1 })
     ]);
     return { channels, modules, program, timetable };
   }
