@@ -31,12 +31,10 @@ export const createRecommendedStoreSlice = () => {
       const modules = await recommendedService.fetchRecommendedModulesByReferenceId({ limit, offset, referenceId });
       set((state) => {
         return produce(state, (draft) => {
-          console.log("Before Composing:", JSON.parse(JSON.stringify(draft)));
           draft.references[referenceId] = [...new Set([...(draft.references[referenceId] ?? []), ...modules.map((module) => module.id)])];
           for (const module of modules) {
             draft.recommendedModules[module.id] = module;
           }
-          console.log("Composed:", JSON.parse(JSON.stringify(draft)));
         });
       });
       return modules;

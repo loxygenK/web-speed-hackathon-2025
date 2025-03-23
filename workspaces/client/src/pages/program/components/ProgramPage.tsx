@@ -60,22 +60,17 @@ export const ProgramPageImpl = () => {
   const isBroadcastStarted = DateTime.fromISO(program.startAt) <= DateTime.now();
 
   useCurrentUnixtimeMs("min", useCallback(() => {
-    console.log("Update!");
-
     if (isArchivedRef.current) {
-      console.log("This is archived.");
       return;
     }
 
     if (DateTime.now() < DateTime.fromISO(program.endAt)) {
-      console.log("The program is still on the live.");
       return;
     }
 
     // 放送中に次の番組が始まったら、画面をそのままにしつつ、情報を次の番組にする
 
     const nextId = nextProgram?.id;
-    console.log("Up next:", nextId);
     if (nextId == null) {
       isArchivedRef.current = true;
       forceUpdate();

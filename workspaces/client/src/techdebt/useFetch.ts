@@ -35,7 +35,6 @@ export function createFetchLogic<T, U, R extends Params[]>(
       return;
     }
     if(config?.prefetch) {
-      console.log("Prefetching");
       return await fetcher(select(store.getState()))(...params);;
     }
   };

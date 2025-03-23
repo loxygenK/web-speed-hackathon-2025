@@ -12,7 +12,6 @@ export function useStreamingRecommended({ referenceId }: Params) {
   const fetchNext = async () => {
     const fetching = cursor.current;
     cursor.current += 8;
-    console.log("Fetching more, cursor at" + fetching);
     await recommended.fetchRecommendedModulesByReferenceId({
       referenceId: "entrance",
       limit: 8,

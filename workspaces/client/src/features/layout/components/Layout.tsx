@@ -31,8 +31,6 @@ export const Layout = ({ children }: Props) => {
   const isLoading =
     (navigation.location != null && (navigation.state !== 'idle') && navigation.location.state?.["loaderAnimation"] !== "none") || loading;
 
-  console.log(isLoading, navigation.state, navigation);
-
   const [shouldHeaderBeTransparent, setShouldHeaderBeTransparent] = useState(false);
 
   useEffect(() => {
